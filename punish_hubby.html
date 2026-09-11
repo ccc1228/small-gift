@@ -131,8 +131,8 @@
         <ellipse cx="100" cy="152" rx="54" ry="40" fill="#f7e3b5" stroke="#3d2b1f" stroke-width="5"/>
         <path d="M66 120 Q100 140 134 120" stroke="#d64545" stroke-width="6" fill="none" stroke-linecap="round"/>
         <circle cx="100" cy="92" r="46" fill="#f7e3b5" stroke="#3d2b1f" stroke-width="5"/>
-        <circle cx="60" cy="86" r="15" fill="#f7e3b5" stroke="#3d2b1f" stroke-width="5"/>
-        <circle cx="140" cy="86" r="15" fill="#f7e3b5" stroke="#3d2b1f" stroke-width="5"/>
+        <path d="M58 70 C44 76 39 96 47 114 C51 124 61 122 62 110 C64 100 62 84 58 70 Z" fill="#f7e3b5" stroke="#3d2b1f" stroke-width="4" stroke-linejoin="round"/>
+        <path d="M142 70 C156 76 161 96 153 114 C149 124 139 122 138 110 C136 100 138 84 142 70 Z" fill="#f7e3b5" stroke="#3d2b1f" stroke-width="4" stroke-linejoin="round"/>
         <ellipse cx="76" cy="102" rx="7" ry="4.5" fill="#ffb3c7" opacity=".75"/>
         <ellipse cx="124" cy="102" rx="7" ry="4.5" fill="#ffb3c7" opacity=".75"/>
         <circle cx="88" cy="90" r="4.5" fill="#3d2b1f"/>
@@ -163,8 +163,8 @@
         <ellipse cx="100" cy="152" rx="54" ry="40" fill="#f7e3b5" stroke="#3d2b1f" stroke-width="5"/>
         <path d="M66 120 Q100 140 134 120" stroke="#d64545" stroke-width="6" fill="none" stroke-linecap="round"/>
         <circle cx="100" cy="92" r="46" fill="#f7e3b5" stroke="#3d2b1f" stroke-width="5"/>
-        <circle cx="60" cy="86" r="15" fill="#f7e3b5" stroke="#3d2b1f" stroke-width="5"/>
-        <circle cx="140" cy="86" r="15" fill="#f7e3b5" stroke="#3d2b1f" stroke-width="5"/>
+        <path d="M58 70 C44 76 39 96 47 114 C51 124 61 122 62 110 C64 100 62 84 58 70 Z" fill="#f7e3b5" stroke="#3d2b1f" stroke-width="4" stroke-linejoin="round"/>
+        <path d="M142 70 C156 76 161 96 153 114 C149 124 139 122 138 110 C136 100 138 84 142 70 Z" fill="#f7e3b5" stroke="#3d2b1f" stroke-width="4" stroke-linejoin="round"/>
         <ellipse cx="76" cy="102" rx="7" ry="4.5" fill="#ffb3c7" opacity=".75"/>
         <ellipse cx="124" cy="102" rx="7" ry="4.5" fill="#ffb3c7" opacity=".75"/>
         <g class="eyes-normal">
@@ -236,8 +236,8 @@
         <ellipse cx="100" cy="152" rx="54" ry="40" fill="#f7e3b5" stroke="#3d2b1f" stroke-width="5"/>
         <path d="M66 120 Q100 140 134 120" stroke="#d64545" stroke-width="6" fill="none" stroke-linecap="round"/>
         <circle cx="100" cy="92" r="46" fill="#f7e3b5" stroke="#3d2b1f" stroke-width="5"/>
-        <circle cx="60" cy="86" r="15" fill="#f7e3b5" stroke="#3d2b1f" stroke-width="5"/>
-        <circle cx="140" cy="86" r="15" fill="#f7e3b5" stroke="#3d2b1f" stroke-width="5"/>
+        <path d="M58 70 C44 76 39 96 47 114 C51 124 61 122 62 110 C64 100 62 84 58 70 Z" fill="#f7e3b5" stroke="#3d2b1f" stroke-width="4" stroke-linejoin="round"/>
+        <path d="M142 70 C156 76 161 96 153 114 C149 124 139 122 138 110 C136 100 138 84 142 70 Z" fill="#f7e3b5" stroke="#3d2b1f" stroke-width="4" stroke-linejoin="round"/>
         <ellipse cx="76" cy="102" rx="7" ry="4.5" fill="#ffb3c7" opacity=".75"/>
         <ellipse cx="124" cy="102" rx="7" ry="4.5" fill="#ffb3c7" opacity=".75"/>
         <path d="M84 94 q4 -4 8 0 M112 94 q4 -4 8 0" stroke="#3d2b1f" stroke-width="3" fill="none" stroke-linecap="round"/>
@@ -430,7 +430,7 @@ function kickDog(){
 
 /* ---------- game ---------- */
 let hits = 0, started = false;
-const FULL = 50;
+// 没有固定目标：气出多少她说她算，随时可原谅
 
 function showScreen(id){
   ["sStart","sGame","sFinal"].forEach(s=>$(s).classList.add("hidden"));
@@ -445,7 +445,7 @@ function onHit(){
   if(!started) return;
   hits++;
   $("hitCount").textContent = hits;
-  const pct = Math.min(100, Math.round(hits/FULL*100));
+  const pct = Math.min(100, Math.round(hits*5));
   $("pct").textContent = pct;
   $("barFill").style.width = pct+"%";
   slap();
@@ -454,35 +454,26 @@ function onHit(){
   if(Math.random() < 0.9) cryBubble();
 
   let s = STATE.normal;
-  if(hits >= 20) s = STATE.dizzy;
-  if(hits >= 40) s = STATE.bruised;
+  if(hits >= 8) s = STATE.dizzy;
+  if(hits >= 18) s = STATE.bruised;
   showState(s);
 
-  if(hits === 10){ $("gameSub").textContent = "打中啦！小狗开始眼冒金星… 出气进度 20%"; ding(); }
-  if(hits === 20){ $("gameSub").textContent = "星星在它头顶转圈圈… 出气进度 40%"; ding(); }
-  if(hits === 40){ $("gameSub").textContent = "呜呜呜…打哭了！肿包都出来了，气该消了吧~"; ding(); }
-  if(hits >= FULL){
-    $("pct").textContent = 100;
-    $("barFill").style.width = "100%";
-    $("barLabel").textContent = "气出够了！快原谅他吧！！";
-    $("btnForgiveQuick").textContent = "气消了！盖原谅章 ❤️";
-    ding(); fanfare();
-  } else {
-    let label;
-    if(hits < 10)      label = "她还很生气… 继续打！("+pct+"%)";
-    else if(hits < 20) label = "有点解气了… 继续！("+pct+"%)";
-    else if(hits < 30) label = "差不多了… 再打几下！("+pct+"%)";
-    else if(hits < 40) label = "快消气了！再打几下发发威 ("+pct+"%)";
-    else               label = "再打几下就够啦 ("+pct+"%)";
-    if(hits === 30) label = "他大喊：老婆出气了没？我认错了真的!! 😭";
-    $("barLabel").textContent = label;
-  }
+  if(hits === 8){ $("gameSub").textContent = "打中啦！他眼冒金星…"; ding(); }
+  if(hits === 18){ $("gameSub").textContent = "呜呜呜…打哭了！肿包都出来了，气该消了吧~"; ding(); }
+  let label;
+  if(hits < 8)       label = "她还很生气… 继续打！("+pct+"%)";
+  else if(hits < 18) label = "有点解气了… 继续！("+pct+"%)";
+  else               label = "差不多了！再打几下，气够了就原谅他 ("+pct+"%)";
+  $("barLabel").textContent = label;
 }
 
 function finish(){
   showScreen("sFinal");
   fanfare();
   confetti();
+  $("pct").textContent = 100;
+  $("barFill").style.width = "100%";
+  $("barLabel").textContent = "气消了！原谅券已盖章 ❤️";
   $("finalHits").textContent = hits;
   $("forgiveCard").classList.remove("hidden");
   $("promiseCard").classList.add("hidden");
