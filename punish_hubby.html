@@ -26,8 +26,9 @@
     text-shadow:0 2px 0 #fff; margin-bottom:6px; }
   .sub { font-size:clamp(13px,3.6vw,17px); opacity:.9; margin-bottom:8px; line-height:1.6; font-weight:600; }
 
-  .dogbox { position:relative; width:min(60vw,280px); margin:8px auto; }
-  .dogbox svg { width:100%; height:auto; display:block; overflow:visible; }
+  .dogbox { position:relative; width:min(62vw,290px); margin:8px auto; }
+  .dog-inner { position:relative; width:100%; }
+  .dog-inner svg { width:100%; height:auto; display:block; }
   .bounce { animation:bounce 2.2s ease-in-out infinite; }
   @keyframes bounce { 0%,100%{ transform:translateY(0);} 50%{ transform:translateY(-8px);} }
   .wobble { animation:wobble 1.5s ease-in-out infinite; }
@@ -35,12 +36,9 @@
   .tremble { animation:tremble .18s linear infinite; }
   @keyframes tremble { 0%,100%{transform:translate(0,0);} 25%{transform:translate(-1.5px,1px);} 50%{transform:translate(1.5px,-1px);} 75%{transform:translate(-1px,-1.5px);} }
 
-  .bubble { position:absolute; top:-34px; left:50%; transform:translateX(-50%); white-space:nowrap;
-    font-weight:800; font-size:clamp(13px,3.8vw,16px); color:#d6336c; background:#fff;
-    padding:6px 12px; border-radius:18px; box-shadow:0 4px 12px rgba(214,51,108,.25); z-index:3; }
   .cry { position:absolute; top:-40px; left:50%; transform:translateX(-50%); white-space:nowrap;
     font-weight:800; font-size:clamp(14px,4.2vw,18px); color:#d6336c; background:#fff;
-    padding:6px 14px; border-radius:20px; box-shadow:0 4px 14px rgba(214,51,108,.3); z-index:3;
+    padding:6px 14px; border-radius:20px; box-shadow:0 4px 14px rgba(214,51,108,.3); z-index:4;
     animation:popCry .9s ease-out forwards; }
   @keyframes popCry { 0%{opacity:0; transform:translateX(-50%) scale(.5) translateY(8px);}
     20%{opacity:1; transform:translateX(-50%) scale(1.05) translateY(0);}
@@ -99,17 +97,21 @@
   #sFinal .dogbox { margin-top:50px; }
   footer { position:fixed; bottom:8px; width:100%; text-align:center; font-size:11px; opacity:.5; z-index:2; }
 
-  /* SVG 内动画 */
-  #starsSpin { animation:spinStar 1.1s linear infinite; transform-origin:100px 38px; }
+  /* ---- 被打状态特效（长在狗身上，随形变一起动） ---- */
+  .fx { position:absolute; pointer-events:none; z-index:2; }
+  .fx-star { position:absolute; font-size:24px; animation:spinStar 1.1s linear infinite; transform-origin:center; }
   @keyframes spinStar { 0%{transform:rotate(0);} 100%{transform:rotate(360deg);} }
-  .tearL { animation:tearDrop 1.1s ease-in infinite; }
-  .tearR { animation:tearDrop 1.35s ease-in infinite .25s; }
-  @keyframes tearDrop { 0%{transform:translateY(0); opacity:0;} 30%{opacity:1;} 100%{transform:translateY(20px); opacity:0;} }
-  .bump { animation:bumpPop .5s cubic-bezier(.2,1.8,.4,1); transform-origin:66px 30px; }
-  @keyframes bumpPop { 0%{transform:scale(0) rotate(0);} 60%{transform:scale(1.2) rotate(-10deg);} 100%{transform:scale(1) rotate(0);} }
-  .heartFloat { animation:heartF 2.2s ease-in-out infinite; }
+  .fx-bump { position:absolute; width:28px; height:28px; border-radius:50%;
+    background:#ff6b6b; border:3px solid #c0392b; display:flex; align-items:center; justify-content:center;
+    font-size:15px; color:#fff; font-weight:900; animation:bumpPop .5s cubic-bezier(.2,1.8,.4,1); }
+  @keyframes bumpPop { 0%{transform:scale(0);} 60%{transform:scale(1.2) rotate(-8deg);} 100%{transform:scale(1);} }
+  .fx-eye { position:absolute; font-size:20px; font-weight:900; color:#3d2b1f; line-height:1; }
+  .fx-tear { position:absolute; font-size:15px; animation:tearDrop 1.1s ease-in infinite; }
+  .fx-tear.r { animation-delay:.3s; }
+  @keyframes tearDrop { 0%{transform:translateY(0); opacity:0;} 30%{opacity:1;} 100%{transform:translateY(22px); opacity:0;} }
+  .heartFloat { animation:heartF 2.2s ease-in-out infinite; transform-origin:center; }
   @keyframes heartF { 0%,100%{transform:translateY(0) scale(1); opacity:.9;} 50%{transform:translateY(-8px) scale(1.15); opacity:1;} }
-  .flowerSway { animation:sway 2.4s ease-in-out infinite; transform-origin:100px 150px; }
+  .flowerSway { animation:sway 2.4s ease-in-out infinite; transform-origin:50% 80%; }
   @keyframes sway { 0%,100%{transform:rotate(-3deg);} 50%{transform:rotate(3deg);} }
 </style>
 </head>
@@ -121,25 +123,48 @@
   <h1>惩罚<br>揣走东西的狗</h1>
   <div class="sub">对不起，是我太粗心<br>带走了你的东西…<br>随便打我出气，<br>打到你觉得气出够了为止！</div>
   <div class="dogbox bounce">
-    <div class="bubble">是我带走的…对不起</div>
-    <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" aria-label="揣走东西的狗">
-      <g id="dogG0">
-        <g class="d-leg"><rect x="72" y="168" width="13" height="26" rx="6.5" fill="#f7e3b5" stroke="#3d2b1f" stroke-width="4"/></g>
-        <g class="d-leg"><rect x="115" y="168" width="13" height="26" rx="6.5" fill="#f7e3b5" stroke="#3d2b1f" stroke-width="4"/></g>
-        <path d="M150 158 Q172 146 168 122" stroke="#f7e3b5" stroke-width="9" fill="none" stroke-linecap="round"/>
-        <path d="M150 158 Q172 146 168 122" stroke="#3d2b1f" stroke-width="3" fill="none" stroke-linecap="round"/>
-        <ellipse cx="100" cy="152" rx="54" ry="40" fill="#f7e3b5" stroke="#3d2b1f" stroke-width="5"/>
-        <path d="M66 120 Q100 140 134 120" stroke="#d64545" stroke-width="6" fill="none" stroke-linecap="round"/>
-        <circle cx="100" cy="92" r="46" fill="#f7e3b5" stroke="#3d2b1f" stroke-width="5"/>
-        <path d="M58 70 C44 76 39 96 47 114 C51 124 61 122 62 110 C64 100 62 84 58 70 Z" fill="#f7e3b5" stroke="#3d2b1f" stroke-width="4" stroke-linejoin="round"/>
-        <path d="M142 70 C156 76 161 96 153 114 C149 124 139 122 138 110 C136 100 138 84 142 70 Z" fill="#f7e3b5" stroke="#3d2b1f" stroke-width="4" stroke-linejoin="round"/>
-        <ellipse cx="76" cy="102" rx="7" ry="4.5" fill="#ffb3c7" opacity=".75"/>
-        <ellipse cx="124" cy="102" rx="7" ry="4.5" fill="#ffb3c7" opacity=".75"/>
-        <circle cx="88" cy="90" r="4.5" fill="#3d2b1f"/>
-        <circle cx="112" cy="90" r="4.5" fill="#3d2b1f"/>
-        <path d="M92 104 Q100 111 108 104" stroke="#3d2b1f" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <div class="dog-inner">
+      <svg viewBox="0 0 72 72" xmlns="http://www.w3.org/2000/svg" aria-label="揣走东西的狗">
+  <g>
+    <path fill="#fff" d="m46.0864,57.1092s2.3035-5.5769,2.1216-7.456,2.3035.8487,2.3035.8487l-.4243,5.7587s-3.8796,2.6066-4.0008.8487Z"/>
+    <path fill="#fff" d="m35.6601,52.381s-.1378-6.3898-.4243-8.6078,4.0614-.7274,4.0614-.7274l1.8792,6.0618s-5.3253,5.3483-5.5163,3.2734Z"/>
+    <path fill="#fff" d="m47.9656,25.0421s2.061-3.8796,3.4552-3.2734,2.1823,2.3641,1.273,2.7884-1.8792,1.3336-2.9097,1.2124-1.5761.3637-1.8185-.7274Z"/>
+    <path fill="#fff" d="m40.2998,25.4565s2.061-3.8796,3.4552-3.2734,2.1823,2.3641,1.273,2.7884-1.8792,1.3336-2.9097,1.2124-1.5761.3637-1.8185-.7274Z"/>
+    <g>
+      <path fill="#6a462f" d="m43.8655,56.8472c2.2959-3.7382,3.2914-8.1306,2.8315-12.4934l-2.099-3.083-4.108-1.5343c.0547.6407,1.5706,5.5234,2.0129,6.7978.0999.2885.1443.5932.131.8982-.248,5.4982-1.561,6.9861-1.8953,7.2784-.0212.0166-.0421.0331-.0625.05l-.0157.0108.0025.0023c-.3653.3105-.5897.7554-.622,1.2338-.0281,1.0642.804,1.9535,1.8677,1.996.6068.0468,1.2021-.1845,1.6182-.6287l.0024.0022.0078-.0123c.1385-.1524.2497-.3275.3285-.5178Z"/>
+      <path fill="#6a462f" d="m33.3114,55.9593c.1824-2.433.2363-4.874.1614-7.3127.1175-1.8275-.2525-3.6535-1.0721-5.2911l-2.1249.3931-1.1014,2.5814.8961,2.64c1.1916,3.3886.69,4.9746.1641,5.6835-.231.1377-.4358.3152-.605.5242l-.0077.0033.0036.0015c-.4493.5203-.5685,1.2488-.3085,1.8852.5109.9717,1.7098,1.3496,2.6855.8465.5521-.2383.9839-.6904,1.1966-1.2529h0c.0019-.0089.0079-.0189.01-.028.0767-.2161.1114-.4449.1023-.674Z"/>
+      <path fill="#a57939" d="m20.368,26.8513c1.7688,2.6878,2.7536,5.8153,2.8439,9.0316.0006.0317.0045.0633.0116.0942.0861.376.7177,2.9384,2.1366,3.9037,0,0,2.4232,2.3935-1.8351,3.6861,0,0-6.8524,2.4151-4.76,6.544,0,0,1.4839,2.58,3.3571.0708.036-.0467.0646-.0986.0849-.154.1715-.5642.1345-1.1713-.1041-1.7106-.1001-.2204-.0401-.4806.1464-.635,1.1133-.9593,2.6309-1.3022,4.0485-.9147,0,0,2.32.98,5.221-3.5682.0278-.0453.0628-.0858.1035-.12.4942-.4091,4.0807-3.1572,10.555-2.52.1256.0114.2435.0651.3345.1524.866.838,5.6769,5.4328,8.5311,6.8831.0458.0221.0874.0518.1231.088,1.686,1.7868,2.3922,4.2849,1.8911,6.69-.0205.1054-.0711.2026-.1455.28-.4252.4341-1.8257,2.12.8921,3.1532.0704.0271.1455.0401.2209.0383.5794-.0219,3.1319-.3129,2.0291-3.7774-.016-.0472-.0246-.0966-.0254-.1465-.0041-.7223-.088-6.956-1.7424-10.4368-.034-.0718-.0836-.1352-.1451-.1855-.3782-.3157-1.8671-2.1484-.7375-10.9222.0058-.0447.1809-.1465.1683-.19-.1975-.6747,1.1232-2.7292,1.743-3.3268h0c.1846-.1662,6.445-6.5168,2.2092-10.8378-.0293-.03.03.03,0,0-.4411-.4445-5.5293-4.0273-8.61-.5261-.8007,1.0612-1.4293,2.242-1.8627,3.4988-.7463,2.6171,1.0645,4.7977,2.0617,2.2655.09-.2279,1.31-2.0434,1.3959-2.3088.0268-.0863.075-.1644.14-.2272.5137-.4753,2.9136-2.4076,4.1177,1.7125,0,0,1.0682,3.6264-4.444,5.4868-.1323.0459-.277.0402-.4053-.016-.7856-.3523-4.0565-1.5641-9.216-.0783-.0136.0042-.0275.0076-.0416.01-.4561.0772-10.2279,1.6335-11.3375-6.6,0,0-.74-4.5766-3.08-4.64l-5.2076-.7865s-2.2711-.0165-2.6165,1.6937c0,0-.0406,1.4028-2.6234,1.3287-.6628.0024-3.1142-.4216-2.0858,2.3116.0461.1153.0517.2429.0159.3618-.2187.6733-.7872,3.15,2.5768,3.4085.0008-.0008,2.9437-.1502,4.0666,1.9351Z"/>
+    </g>
+  </g>
+  <g>
+    <g>
+      <path fill="none" stroke="#000" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="m40.9145,41.4186c.2106.6232,1.7517,4.7609,1.8826,5.1157.106.2871.1534.5925.1394.8982-.2637,5.4982-1.66,6.9861-2.0154,7.2784-.0225.0166.0218-.0175,0,0"/>
+      <path fill="none" stroke="#000" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="m43.1465,57.53c3.8735-3.454,3.5435-13.1762,3.5435-13.1762"/>
+      <path fill="none" stroke="#000" stroke-miterlimit="10" stroke-width="2" d="m40.9211,54.7109c-.3898.3338-.6521.7922-.7423,1.2974-.0705,1.0101.6737,1.8937,1.6811,1.996.559.041,1.1028-.1937,1.4564-.6287l.0022.0022"/>
+      <path fill="none" stroke="#000" stroke-miterlimit="10" stroke-width="2" d="m29.1744,46.33l.8961,2.64c1.1916,3.3886.69,4.9746.1641,5.6835l-.6091.529c-.4493.5203-.5685,1.2488-.3085,1.8852.5109.9717,1.7098,1.3496,2.6855.8465.5521-.2383.9839-.6904,1.1966-1.2529h0c.0019-.0089.0079-.0189.01-.028.0766-.2158.1114-.4443.1025-.6732.1824-2.433.2363-4.874.1614-7.3127.0507-.77.0132-1.5433-.112-2.3048-.1589-1.0402-.4829-2.0484-.96-2.9863"/>
+      <g>
+        <path fill="none" stroke="#000" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="m18.5614,47.6026c-.2448.8325-.1721,1.7263.204,2.5083.3765.9688,1.4638,1.4527,2.4356,1.0839.8852-.4055.8639-1.798.56-2.8257"/>
+        <path fill="none" stroke="#000" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="m21.7158,48.219c.9199-1.083,2.2899-1.6784,3.7093-1.6119.1856.0021.3701.03.548.0831,1.3948.5023,2.9482-.0795,3.67-1.3744"/>
+        <g>
+          <path fill="none" stroke="#000" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="m53.5147,32.9083l-.2959,5.6328s-.2094,3.6923.8078,4.5411c.9776,1.3819,1.4287,3.0679,1.2718,4.7533,0,0,.5363,5.7575.6973,7.9907"/>
+          <path fill="none" stroke="#000" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="m48.5415,23.6767c2.5433-6.4561,5.1809-3.19,5.1809-3.19,3.1773,3.94-.9928,6.3629-2.8305,7.1889-.4465.184-.949.1768-1.39-.02-2.5616-1.029-8.8257.179-8.8257.179-2.142.2748-4.3174.1152-6.3963-.4692-.0878-.0282-.1733-.0571-.2566-.0866-.6045-.2069-1.178-.4951-1.7047-.8568-.4561-.2903-.8395-.6815-1.1206-1.1433-1.2138-2.3231-2.2386-4.7402-3.0644-7.2278-.1591-.524-.5431-.9501-1.0479-1.1626-1.6668-.5622-3.3983-.9099-5.1529-1.0346-3.1365-.3594-3.5144,1.6507-3.5144,1.6507-.532,1.369-1.4378,1.3243-1.4378,1.3243l-1.8637.0069c-2.3111.1288-1.3312,2.5027-1.3312,2.5027-.5857,3.0884,3.0884,3.7274,3.0884,3.7274,1.1941.0281,2.3342.5031,3.195,1.3312,1.5722,2.3456,2.575,5.026,2.9286,7.8276.213,3.6741,1.7347,4.9613,1.7347,4.9613,2.8549,2.7709,0,3.8205,0,3.8205-4.2084,1.5247-5.75,3.2313-6.1435,4.606"/>
+        </g>
+        <path fill="none" stroke="#000" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="m55.9957,55.8263c.1855,1.6659-.9823,2.0907-2.0845,2.0184-1.0393-.007-1.8785-.8507-1.88-1.89.0726-.4946.1857-.9823.3382-1.4583"/>
+        <path fill="none" stroke="#000" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="m55.9957,55.8263c.0105.1455.02.2771.0266.39"/>
+        <path fill="none" stroke="#000" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="m52.22,55.11c.3731-1.2449,1.0885-4.4928-.6281-7.0155-.1283-.1855-.2917-.344-.481-.4666-1.13-.7421-5.4176-3.6535-7.3255-6.34-.2637-.3621-.6733-.59-1.12-.623-2.4893-.218-10.3347-.4413-13.209,4.9821"/>
       </g>
-    </svg>
+    </g>
+  </g>
+  <g>
+    <g>
+      <path fill="none" stroke="#3f3f3f" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="m48.4455,14.1812l-1.7845-.6677c-.8312-.4187-1.021.0567-1.3429.3191l-12.3224,9.8418"/>
+      <path fill="none" stroke="#3f3f3f" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="m33.23,27.1318c-1.5801,4.9707-1.3804,10.3365.5648,15.176"/>
+      <path fill="none" stroke="#3f3f3f" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="m33.23,27.1318s-6.0878,6.0749-10.8849,5.27"/>
+      <path fill="none" stroke="#3f3f3f" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="m29.1744,30.3174l19.2011-15.4683c.2039-.1643.2361-.4628.0718-.6668-.0642-.0798-.1526-.1366-.2518-.1619l-2.3655-.6049"/>
+    </g>
+  </g>
+</svg>
+    </div>
   </div>
   <div class="ticker">📦 这次又被带走的：<span id="tickerText">钥匙 🔑</span></div>
   <button class="btn" id="btnStart">开始出气！💢</button>
@@ -151,51 +176,66 @@
   <div class="hud">
     <div class="hud-row"><span>👊 已打 <b id="hitCount">0</b> 下</span><span>出气进度 <b id="pct">0</b>%</span></div>
     <div class="bar"><div class="bar-fill" id="barFill"></div></div>
-    <div class="bar-label" id="barLabel">她还很生气… 打我吧！</div>
+    <div class="bar-label" id="barLabel">还很生气… 打我吧！</div>
   </div>
   <div class="dogbox" id="dogBox">
-    <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" aria-label="出气的狗">
-      <g id="dogG">
-        <g class="d-leg"><rect x="72" y="168" width="13" height="26" rx="6.5" fill="#f7e3b5" stroke="#3d2b1f" stroke-width="4"/></g>
-        <g class="d-leg"><rect x="115" y="168" width="13" height="26" rx="6.5" fill="#f7e3b5" stroke="#3d2b1f" stroke-width="4"/></g>
-        <path d="M150 158 Q172 146 168 122" stroke="#f7e3b5" stroke-width="9" fill="none" stroke-linecap="round"/>
-        <path d="M150 158 Q172 146 168 122" stroke="#3d2b1f" stroke-width="3" fill="none" stroke-linecap="round"/>
-        <ellipse cx="100" cy="152" rx="54" ry="40" fill="#f7e3b5" stroke="#3d2b1f" stroke-width="5"/>
-        <path d="M66 120 Q100 140 134 120" stroke="#d64545" stroke-width="6" fill="none" stroke-linecap="round"/>
-        <circle cx="100" cy="92" r="46" fill="#f7e3b5" stroke="#3d2b1f" stroke-width="5"/>
-        <path d="M58 70 C44 76 39 96 47 114 C51 124 61 122 62 110 C64 100 62 84 58 70 Z" fill="#f7e3b5" stroke="#3d2b1f" stroke-width="4" stroke-linejoin="round"/>
-        <path d="M142 70 C156 76 161 96 153 114 C149 124 139 122 138 110 C136 100 138 84 142 70 Z" fill="#f7e3b5" stroke="#3d2b1f" stroke-width="4" stroke-linejoin="round"/>
-        <ellipse cx="76" cy="102" rx="7" ry="4.5" fill="#ffb3c7" opacity=".75"/>
-        <ellipse cx="124" cy="102" rx="7" ry="4.5" fill="#ffb3c7" opacity=".75"/>
-        <g class="eyes-normal">
-          <circle cx="88" cy="90" r="4.5" fill="#3d2b1f"/>
-          <circle cx="112" cy="90" r="4.5" fill="#3d2b1f"/>
+    <div class="dog-inner" id="dogInner">
+      <svg viewBox="0 0 72 72" xmlns="http://www.w3.org/2000/svg" aria-label="出气的狗">
+  <g>
+    <path fill="#fff" d="m46.0864,57.1092s2.3035-5.5769,2.1216-7.456,2.3035.8487,2.3035.8487l-.4243,5.7587s-3.8796,2.6066-4.0008.8487Z"/>
+    <path fill="#fff" d="m35.6601,52.381s-.1378-6.3898-.4243-8.6078,4.0614-.7274,4.0614-.7274l1.8792,6.0618s-5.3253,5.3483-5.5163,3.2734Z"/>
+    <path fill="#fff" d="m47.9656,25.0421s2.061-3.8796,3.4552-3.2734,2.1823,2.3641,1.273,2.7884-1.8792,1.3336-2.9097,1.2124-1.5761.3637-1.8185-.7274Z"/>
+    <path fill="#fff" d="m40.2998,25.4565s2.061-3.8796,3.4552-3.2734,2.1823,2.3641,1.273,2.7884-1.8792,1.3336-2.9097,1.2124-1.5761.3637-1.8185-.7274Z"/>
+    <g>
+      <path fill="#6a462f" d="m43.8655,56.8472c2.2959-3.7382,3.2914-8.1306,2.8315-12.4934l-2.099-3.083-4.108-1.5343c.0547.6407,1.5706,5.5234,2.0129,6.7978.0999.2885.1443.5932.131.8982-.248,5.4982-1.561,6.9861-1.8953,7.2784-.0212.0166-.0421.0331-.0625.05l-.0157.0108.0025.0023c-.3653.3105-.5897.7554-.622,1.2338-.0281,1.0642.804,1.9535,1.8677,1.996.6068.0468,1.2021-.1845,1.6182-.6287l.0024.0022.0078-.0123c.1385-.1524.2497-.3275.3285-.5178Z"/>
+      <path fill="#6a462f" d="m33.3114,55.9593c.1824-2.433.2363-4.874.1614-7.3127.1175-1.8275-.2525-3.6535-1.0721-5.2911l-2.1249.3931-1.1014,2.5814.8961,2.64c1.1916,3.3886.69,4.9746.1641,5.6835-.231.1377-.4358.3152-.605.5242l-.0077.0033.0036.0015c-.4493.5203-.5685,1.2488-.3085,1.8852.5109.9717,1.7098,1.3496,2.6855.8465.5521-.2383.9839-.6904,1.1966-1.2529h0c.0019-.0089.0079-.0189.01-.028.0767-.2161.1114-.4449.1023-.674Z"/>
+      <path fill="#a57939" d="m20.368,26.8513c1.7688,2.6878,2.7536,5.8153,2.8439,9.0316.0006.0317.0045.0633.0116.0942.0861.376.7177,2.9384,2.1366,3.9037,0,0,2.4232,2.3935-1.8351,3.6861,0,0-6.8524,2.4151-4.76,6.544,0,0,1.4839,2.58,3.3571.0708.036-.0467.0646-.0986.0849-.154.1715-.5642.1345-1.1713-.1041-1.7106-.1001-.2204-.0401-.4806.1464-.635,1.1133-.9593,2.6309-1.3022,4.0485-.9147,0,0,2.32.98,5.221-3.5682.0278-.0453.0628-.0858.1035-.12.4942-.4091,4.0807-3.1572,10.555-2.52.1256.0114.2435.0651.3345.1524.866.838,5.6769,5.4328,8.5311,6.8831.0458.0221.0874.0518.1231.088,1.686,1.7868,2.3922,4.2849,1.8911,6.69-.0205.1054-.0711.2026-.1455.28-.4252.4341-1.8257,2.12.8921,3.1532.0704.0271.1455.0401.2209.0383.5794-.0219,3.1319-.3129,2.0291-3.7774-.016-.0472-.0246-.0966-.0254-.1465-.0041-.7223-.088-6.956-1.7424-10.4368-.034-.0718-.0836-.1352-.1451-.1855-.3782-.3157-1.8671-2.1484-.7375-10.9222.0058-.0447.1809-.1465.1683-.19-.1975-.6747,1.1232-2.7292,1.743-3.3268h0c.1846-.1662,6.445-6.5168,2.2092-10.8378-.0293-.03.03.03,0,0-.4411-.4445-5.5293-4.0273-8.61-.5261-.8007,1.0612-1.4293,2.242-1.8627,3.4988-.7463,2.6171,1.0645,4.7977,2.0617,2.2655.09-.2279,1.31-2.0434,1.3959-2.3088.0268-.0863.075-.1644.14-.2272.5137-.4753,2.9136-2.4076,4.1177,1.7125,0,0,1.0682,3.6264-4.444,5.4868-.1323.0459-.277.0402-.4053-.016-.7856-.3523-4.0565-1.5641-9.216-.0783-.0136.0042-.0275.0076-.0416.01-.4561.0772-10.2279,1.6335-11.3375-6.6,0,0-.74-4.5766-3.08-4.64l-5.2076-.7865s-2.2711-.0165-2.6165,1.6937c0,0-.0406,1.4028-2.6234,1.3287-.6628.0024-3.1142-.4216-2.0858,2.3116.0461.1153.0517.2429.0159.3618-.2187.6733-.7872,3.15,2.5768,3.4085.0008-.0008,2.9437-.1502,4.0666,1.9351Z"/>
+    </g>
+  </g>
+  <g>
+    <g>
+      <path fill="none" stroke="#000" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="m40.9145,41.4186c.2106.6232,1.7517,4.7609,1.8826,5.1157.106.2871.1534.5925.1394.8982-.2637,5.4982-1.66,6.9861-2.0154,7.2784-.0225.0166.0218-.0175,0,0"/>
+      <path fill="none" stroke="#000" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="m43.1465,57.53c3.8735-3.454,3.5435-13.1762,3.5435-13.1762"/>
+      <path fill="none" stroke="#000" stroke-miterlimit="10" stroke-width="2" d="m40.9211,54.7109c-.3898.3338-.6521.7922-.7423,1.2974-.0705,1.0101.6737,1.8937,1.6811,1.996.559.041,1.1028-.1937,1.4564-.6287l.0022.0022"/>
+      <path fill="none" stroke="#000" stroke-miterlimit="10" stroke-width="2" d="m29.1744,46.33l.8961,2.64c1.1916,3.3886.69,4.9746.1641,5.6835l-.6091.529c-.4493.5203-.5685,1.2488-.3085,1.8852.5109.9717,1.7098,1.3496,2.6855.8465.5521-.2383.9839-.6904,1.1966-1.2529h0c.0019-.0089.0079-.0189.01-.028.0766-.2158.1114-.4443.1025-.6732.1824-2.433.2363-4.874.1614-7.3127.0507-.77.0132-1.5433-.112-2.3048-.1589-1.0402-.4829-2.0484-.96-2.9863"/>
+      <g>
+        <path fill="none" stroke="#000" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="m18.5614,47.6026c-.2448.8325-.1721,1.7263.204,2.5083.3765.9688,1.4638,1.4527,2.4356,1.0839.8852-.4055.8639-1.798.56-2.8257"/>
+        <path fill="none" stroke="#000" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="m21.7158,48.219c.9199-1.083,2.2899-1.6784,3.7093-1.6119.1856.0021.3701.03.548.0831,1.3948.5023,2.9482-.0795,3.67-1.3744"/>
+        <g>
+          <path fill="none" stroke="#000" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="m53.5147,32.9083l-.2959,5.6328s-.2094,3.6923.8078,4.5411c.9776,1.3819,1.4287,3.0679,1.2718,4.7533,0,0,.5363,5.7575.6973,7.9907"/>
+          <path fill="none" stroke="#000" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="m48.5415,23.6767c2.5433-6.4561,5.1809-3.19,5.1809-3.19,3.1773,3.94-.9928,6.3629-2.8305,7.1889-.4465.184-.949.1768-1.39-.02-2.5616-1.029-8.8257.179-8.8257.179-2.142.2748-4.3174.1152-6.3963-.4692-.0878-.0282-.1733-.0571-.2566-.0866-.6045-.2069-1.178-.4951-1.7047-.8568-.4561-.2903-.8395-.6815-1.1206-1.1433-1.2138-2.3231-2.2386-4.7402-3.0644-7.2278-.1591-.524-.5431-.9501-1.0479-1.1626-1.6668-.5622-3.3983-.9099-5.1529-1.0346-3.1365-.3594-3.5144,1.6507-3.5144,1.6507-.532,1.369-1.4378,1.3243-1.4378,1.3243l-1.8637.0069c-2.3111.1288-1.3312,2.5027-1.3312,2.5027-.5857,3.0884,3.0884,3.7274,3.0884,3.7274,1.1941.0281,2.3342.5031,3.195,1.3312,1.5722,2.3456,2.575,5.026,2.9286,7.8276.213,3.6741,1.7347,4.9613,1.7347,4.9613,2.8549,2.7709,0,3.8205,0,3.8205-4.2084,1.5247-5.75,3.2313-6.1435,4.606"/>
         </g>
-        <g class="eyes-dizzy" style="display:none">
-          <circle cx="88" cy="90" r="8" stroke="#3d2b1f" stroke-width="3" fill="none"/>
-          <circle cx="88" cy="90" r="3" fill="#3d2b1f"/>
-          <circle cx="112" cy="90" r="8" stroke="#3d2b1f" stroke-width="3" fill="none"/>
-          <circle cx="112" cy="90" r="3" fill="#3d2b1f"/>
-        </g>
-        <g class="eyes-cry" style="display:none">
-          <path d="M82 84 l12 12 M94 84 l-12 12" stroke="#3d2b1f" stroke-width="3.5" stroke-linecap="round"/>
-          <path d="M106 84 l12 12 M118 84 l-12 12" stroke="#3d2b1f" stroke-width="3.5" stroke-linecap="round"/>
-        </g>
-        <g id="starsSpin" style="display:none">
-          <path d="M100 12 l3 6.2 6.9-.8 -4.8 5 1.3 6.6 -6.4-2.6 -6.4 2.6 1.3-6.6 -4.8-5 6.9.8 Z" fill="#ffc93c" stroke="#e09a00" stroke-width="1.5"/>
-          <path d="M61 30 l2.4 5 5.5-.7 -3.8 4 1 5.3 -5.1-2.1 -5.1 2.1 1-5.3 -3.8-4 5.5.7 Z" fill="#ffc93c" stroke="#e09a00" stroke-width="1.5"/>
-          <path d="M139 30 l2.4 5 5.5-.7 -3.8 4 1 5.3 -5.1-2.1 -5.1 2.1 1-5.3 -3.8-4 5.5.7 Z" fill="#ffc93c" stroke="#e09a00" stroke-width="1.5"/>
-        </g>
-        <g class="bump" id="bumpG" style="display:none">
-          <circle cx="66" cy="30" r="13" fill="#ff6b6b" stroke="#c0392b" stroke-width="3"/>
-          <path d="M59 30 l14 0 M66 23 l0 14" stroke="#fff" stroke-width="3" stroke-linecap="round"/>
-        </g>
-        <path class="tearL" id="tearL" d="M88 102 q2.5 7 0 10" stroke="#5ec8f5" stroke-width="3.5" fill="none" stroke-linecap="round" style="display:none"/>
-        <path class="tearR" id="tearR" d="M112 102 q2.5 7 0 10" stroke="#5ec8f5" stroke-width="3.5" fill="none" stroke-linecap="round" style="display:none"/>
-        <path class="mouth" d="M92 104 Q100 111 108 104" stroke="#3d2b1f" stroke-width="3" fill="none" stroke-linecap="round"/>
-        <path class="mouth-sad" d="M92 114 Q100 105 108 114" stroke="#3d2b1f" stroke-width="3" fill="none" stroke-linecap="round" style="display:none"/>
+        <path fill="none" stroke="#000" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="m55.9957,55.8263c.1855,1.6659-.9823,2.0907-2.0845,2.0184-1.0393-.007-1.8785-.8507-1.88-1.89.0726-.4946.1857-.9823.3382-1.4583"/>
+        <path fill="none" stroke="#000" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="m55.9957,55.8263c.0105.1455.02.2771.0266.39"/>
+        <path fill="none" stroke="#000" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="m52.22,55.11c.3731-1.2449,1.0885-4.4928-.6281-7.0155-.1283-.1855-.2917-.344-.481-.4666-1.13-.7421-5.4176-3.6535-7.3255-6.34-.2637-.3621-.6733-.59-1.12-.623-2.4893-.218-10.3347-.4413-13.209,4.9821"/>
       </g>
-    </svg>
+    </g>
+  </g>
+  <g>
+    <g>
+      <path fill="none" stroke="#3f3f3f" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="m48.4455,14.1812l-1.7845-.6677c-.8312-.4187-1.021.0567-1.3429.3191l-12.3224,9.8418"/>
+      <path fill="none" stroke="#3f3f3f" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="m33.23,27.1318c-1.5801,4.9707-1.3804,10.3365.5648,15.176"/>
+      <path fill="none" stroke="#3f3f3f" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="m33.23,27.1318s-6.0878,6.0749-10.8849,5.27"/>
+      <path fill="none" stroke="#3f3f3f" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="m29.1744,30.3174l19.2011-15.4683c.2039-.1643.2361-.4628.0718-.6668-.0642-.0798-.1526-.1366-.2518-.1619l-2.3655-.6049"/>
+    </g>
+  </g>
+</svg>
+      <!-- 头顶金星 -->
+      <span class="fx fx-star" id="fxStar1" style="display:none; left:44%; top:-2%;">⭐</span>
+      <span class="fx fx-star" id="fxStar2" style="display:none; left:56%; top:-6%;">🌟</span>
+      <span class="fx fx-star" id="fxStar3" style="display:none; left:68%; top:-2%;">⭐</span>
+      <!-- 头顶肿包 -->
+      <div class="fx fx-bump" id="fxBump" style="display:none; left:38%; top:-4%;">+</div>
+      <!-- 晕眼 -->
+      <span class="fx fx-eye" id="fxEyeL" style="display:none; left:47%; top:24%;">◎</span>
+      <span class="fx fx-eye" id="fxEyeR" style="display:none; left:63%; top:25%;">◎</span>
+      <!-- 哭眼 X -->
+      <span class="fx fx-eye" id="fxEyeXL" style="display:none; left:46%; top:24%;">✕</span>
+      <span class="fx fx-eye" id="fxEyeXR" style="display:none; left:62%; top:25%;">✕</span>
+      <!-- 泪滴 -->
+      <span class="fx fx-tear" id="fxTearL" style="display:none; left:49%; top:33%;">💧</span>
+      <span class="fx fx-tear r" id="fxTearR" style="display:none; left:65%; top:34%;">💧</span>
+    </div>
   </div>
   <div class="sub" id="gameSub">连点屏幕出气！气出够了随时原谅他 👇</div>
   <button class="btn soft small" id="btnForgiveQuick">我气消了，原谅他 ❤️</button>
@@ -204,51 +244,75 @@
 <!-- FINAL -->
 <div class="screen hidden" id="sFinal">
   <div class="dogbox bounce">
-    <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" aria-label="捧花认错的小金毛">
-      <g id="dogGf">
-        <g class="flowerSway">
-          <path d="M96 168 L100 112 M104 168 L100 112" stroke="#4caf50" stroke-width="3.5" stroke-linecap="round"/>
-          <ellipse cx="88" cy="148" rx="8" ry="3.5" fill="#4caf50"/>
-          <ellipse cx="113" cy="144" rx="8" ry="3.5" fill="#4caf50"/>
+    <div class="dog-inner">
+      <svg viewBox="0 0 72 72" xmlns="http://www.w3.org/2000/svg" aria-label="捧花认错的小金毛">
+  <g>
+    <path fill="#fff" d="m46.0864,57.1092s2.3035-5.5769,2.1216-7.456,2.3035.8487,2.3035.8487l-.4243,5.7587s-3.8796,2.6066-4.0008.8487Z"/>
+    <path fill="#fff" d="m35.6601,52.381s-.1378-6.3898-.4243-8.6078,4.0614-.7274,4.0614-.7274l1.8792,6.0618s-5.3253,5.3483-5.5163,3.2734Z"/>
+    <path fill="#fff" d="m47.9656,25.0421s2.061-3.8796,3.4552-3.2734,2.1823,2.3641,1.273,2.7884-1.8792,1.3336-2.9097,1.2124-1.5761.3637-1.8185-.7274Z"/>
+    <path fill="#fff" d="m40.2998,25.4565s2.061-3.8796,3.4552-3.2734,2.1823,2.3641,1.273,2.7884-1.8792,1.3336-2.9097,1.2124-1.5761.3637-1.8185-.7274Z"/>
+    <g>
+      <path fill="#6a462f" d="m43.8655,56.8472c2.2959-3.7382,3.2914-8.1306,2.8315-12.4934l-2.099-3.083-4.108-1.5343c.0547.6407,1.5706,5.5234,2.0129,6.7978.0999.2885.1443.5932.131.8982-.248,5.4982-1.561,6.9861-1.8953,7.2784-.0212.0166-.0421.0331-.0625.05l-.0157.0108.0025.0023c-.3653.3105-.5897.7554-.622,1.2338-.0281,1.0642.804,1.9535,1.8677,1.996.6068.0468,1.2021-.1845,1.6182-.6287l.0024.0022.0078-.0123c.1385-.1524.2497-.3275.3285-.5178Z"/>
+      <path fill="#6a462f" d="m33.3114,55.9593c.1824-2.433.2363-4.874.1614-7.3127.1175-1.8275-.2525-3.6535-1.0721-5.2911l-2.1249.3931-1.1014,2.5814.8961,2.64c1.1916,3.3886.69,4.9746.1641,5.6835-.231.1377-.4358.3152-.605.5242l-.0077.0033.0036.0015c-.4493.5203-.5685,1.2488-.3085,1.8852.5109.9717,1.7098,1.3496,2.6855.8465.5521-.2383.9839-.6904,1.1966-1.2529h0c.0019-.0089.0079-.0189.01-.028.0767-.2161.1114-.4449.1023-.674Z"/>
+      <path fill="#a57939" d="m20.368,26.8513c1.7688,2.6878,2.7536,5.8153,2.8439,9.0316.0006.0317.0045.0633.0116.0942.0861.376.7177,2.9384,2.1366,3.9037,0,0,2.4232,2.3935-1.8351,3.6861,0,0-6.8524,2.4151-4.76,6.544,0,0,1.4839,2.58,3.3571.0708.036-.0467.0646-.0986.0849-.154.1715-.5642.1345-1.1713-.1041-1.7106-.1001-.2204-.0401-.4806.1464-.635,1.1133-.9593,2.6309-1.3022,4.0485-.9147,0,0,2.32.98,5.221-3.5682.0278-.0453.0628-.0858.1035-.12.4942-.4091,4.0807-3.1572,10.555-2.52.1256.0114.2435.0651.3345.1524.866.838,5.6769,5.4328,8.5311,6.8831.0458.0221.0874.0518.1231.088,1.686,1.7868,2.3922,4.2849,1.8911,6.69-.0205.1054-.0711.2026-.1455.28-.4252.4341-1.8257,2.12.8921,3.1532.0704.0271.1455.0401.2209.0383.5794-.0219,3.1319-.3129,2.0291-3.7774-.016-.0472-.0246-.0966-.0254-.1465-.0041-.7223-.088-6.956-1.7424-10.4368-.034-.0718-.0836-.1352-.1451-.1855-.3782-.3157-1.8671-2.1484-.7375-10.9222.0058-.0447.1809-.1465.1683-.19-.1975-.6747,1.1232-2.7292,1.743-3.3268h0c.1846-.1662,6.445-6.5168,2.2092-10.8378-.0293-.03.03.03,0,0-.4411-.4445-5.5293-4.0273-8.61-.5261-.8007,1.0612-1.4293,2.242-1.8627,3.4988-.7463,2.6171,1.0645,4.7977,2.0617,2.2655.09-.2279,1.31-2.0434,1.3959-2.3088.0268-.0863.075-.1644.14-.2272.5137-.4753,2.9136-2.4076,4.1177,1.7125,0,0,1.0682,3.6264-4.444,5.4868-.1323.0459-.277.0402-.4053-.016-.7856-.3523-4.0565-1.5641-9.216-.0783-.0136.0042-.0275.0076-.0416.01-.4561.0772-10.2279,1.6335-11.3375-6.6,0,0-.74-4.5766-3.08-4.64l-5.2076-.7865s-2.2711-.0165-2.6165,1.6937c0,0-.0406,1.4028-2.6234,1.3287-.6628.0024-3.1142-.4216-2.0858,2.3116.0461.1153.0517.2429.0159.3618-.2187.6733-.7872,3.15,2.5768,3.4085.0008-.0008,2.9437-.1502,4.0666,1.9351Z"/>
+    </g>
+  </g>
+  <g>
+    <g>
+      <path fill="none" stroke="#000" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="m40.9145,41.4186c.2106.6232,1.7517,4.7609,1.8826,5.1157.106.2871.1534.5925.1394.8982-.2637,5.4982-1.66,6.9861-2.0154,7.2784-.0225.0166.0218-.0175,0,0"/>
+      <path fill="none" stroke="#000" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="m43.1465,57.53c3.8735-3.454,3.5435-13.1762,3.5435-13.1762"/>
+      <path fill="none" stroke="#000" stroke-miterlimit="10" stroke-width="2" d="m40.9211,54.7109c-.3898.3338-.6521.7922-.7423,1.2974-.0705,1.0101.6737,1.8937,1.6811,1.996.559.041,1.1028-.1937,1.4564-.6287l.0022.0022"/>
+      <path fill="none" stroke="#000" stroke-miterlimit="10" stroke-width="2" d="m29.1744,46.33l.8961,2.64c1.1916,3.3886.69,4.9746.1641,5.6835l-.6091.529c-.4493.5203-.5685,1.2488-.3085,1.8852.5109.9717,1.7098,1.3496,2.6855.8465.5521-.2383.9839-.6904,1.1966-1.2529h0c.0019-.0089.0079-.0189.01-.028.0766-.2158.1114-.4443.1025-.6732.1824-2.433.2363-4.874.1614-7.3127.0507-.77.0132-1.5433-.112-2.3048-.1589-1.0402-.4829-2.0484-.96-2.9863"/>
+      <g>
+        <path fill="none" stroke="#000" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="m18.5614,47.6026c-.2448.8325-.1721,1.7263.204,2.5083.3765.9688,1.4638,1.4527,2.4356,1.0839.8852-.4055.8639-1.798.56-2.8257"/>
+        <path fill="none" stroke="#000" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="m21.7158,48.219c.9199-1.083,2.2899-1.6784,3.7093-1.6119.1856.0021.3701.03.548.0831,1.3948.5023,2.9482-.0795,3.67-1.3744"/>
+        <g>
+          <path fill="none" stroke="#000" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="m53.5147,32.9083l-.2959,5.6328s-.2094,3.6923.8078,4.5411c.9776,1.3819,1.4287,3.0679,1.2718,4.7533,0,0,.5363,5.7575.6973,7.9907"/>
+          <path fill="none" stroke="#000" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="m48.5415,23.6767c2.5433-6.4561,5.1809-3.19,5.1809-3.19,3.1773,3.94-.9928,6.3629-2.8305,7.1889-.4465.184-.949.1768-1.39-.02-2.5616-1.029-8.8257.179-8.8257.179-2.142.2748-4.3174.1152-6.3963-.4692-.0878-.0282-.1733-.0571-.2566-.0866-.6045-.2069-1.178-.4951-1.7047-.8568-.4561-.2903-.8395-.6815-1.1206-1.1433-1.2138-2.3231-2.2386-4.7402-3.0644-7.2278-.1591-.524-.5431-.9501-1.0479-1.1626-1.6668-.5622-3.3983-.9099-5.1529-1.0346-3.1365-.3594-3.5144,1.6507-3.5144,1.6507-.532,1.369-1.4378,1.3243-1.4378,1.3243l-1.8637.0069c-2.3111.1288-1.3312,2.5027-1.3312,2.5027-.5857,3.0884,3.0884,3.7274,3.0884,3.7274,1.1941.0281,2.3342.5031,3.195,1.3312,1.5722,2.3456,2.575,5.026,2.9286,7.8276.213,3.6741,1.7347,4.9613,1.7347,4.9613,2.8549,2.7709,0,3.8205,0,3.8205-4.2084,1.5247-5.75,3.2313-6.1435,4.606"/>
+        </g>
+        <path fill="none" stroke="#000" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="m55.9957,55.8263c.1855,1.6659-.9823,2.0907-2.0845,2.0184-1.0393-.007-1.8785-.8507-1.88-1.89.0726-.4946.1857-.9823.3382-1.4583"/>
+        <path fill="none" stroke="#000" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="m55.9957,55.8263c.0105.1455.02.2771.0266.39"/>
+        <path fill="none" stroke="#000" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="m52.22,55.11c.3731-1.2449,1.0885-4.4928-.6281-7.0155-.1283-.1855-.2917-.344-.481-.4666-1.13-.7421-5.4176-3.6535-7.3255-6.34-.2637-.3621-.6733-.59-1.12-.623-2.4893-.218-10.3347-.4413-13.209,4.9821"/>
+      </g>
+    </g>
+  </g>
+  <g>
+    <g>
+      <path fill="none" stroke="#3f3f3f" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="m48.4455,14.1812l-1.7845-.6677c-.8312-.4187-1.021.0567-1.3429.3191l-12.3224,9.8418"/>
+      <path fill="none" stroke="#3f3f3f" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="m33.23,27.1318c-1.5801,4.9707-1.3804,10.3365.5648,15.176"/>
+      <path fill="none" stroke="#3f3f3f" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="m33.23,27.1318s-6.0878,6.0749-10.8849,5.27"/>
+      <path fill="none" stroke="#3f3f3f" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="m29.1744,30.3174l19.2011-15.4683c.2039-.1643.2361-.4628.0718-.6668-.0642-.0798-.1526-.1366-.2518-.1619l-2.3655-.6049"/>
+    </g>
+  </g>
+
+        <g class="flowerSway" transform="translate(0,-4)">
+          <path d="M33 66 L37 44 M39 66 L37 44" stroke="#4caf50" stroke-width="2.2" stroke-linecap="round"/>
+          <ellipse cx="31" cy="58" rx="5" ry="2.2" fill="#4caf50"/>
+          <ellipse cx="44" cy="55" rx="5" ry="2.2" fill="#4caf50"/>
           <g>
-            <circle cx="100" cy="104" r="8" fill="#ff8fb0"/>
-            <ellipse cx="100" cy="94" rx="3.6" ry="6" fill="#ffa8c5"/><ellipse cx="100" cy="114" rx="3.6" ry="6" fill="#ffa8c5"/>
-            <ellipse cx="89" cy="104" rx="3.6" ry="6" fill="#ffa8c5"/><ellipse cx="111" cy="104" rx="3.6" ry="6" fill="#ffa8c5"/>
-            <circle cx="100" cy="104" r="2.8" fill="#ffd36b"/>
+            <circle cx="37" cy="42" r="5" fill="#ff8fb0"/>
+            <ellipse cx="37" cy="37.5" rx="2.2" ry="3.6" fill="#ffa8c5"/><ellipse cx="37" cy="46.5" rx="2.2" ry="3.6" fill="#ffa8c5"/>
+            <ellipse cx="31.5" cy="42" rx="2.2" ry="3.6" fill="#ffa8c5"/><ellipse cx="42.5" cy="42" rx="2.2" ry="3.6" fill="#ffa8c5"/>
+            <circle cx="37" cy="42" r="1.8" fill="#ffd36b"/>
           </g>
           <g>
-            <circle cx="79" cy="114" r="6" fill="#ffd36b"/>
-            <ellipse cx="79" cy="107" rx="2.7" ry="4.5" fill="#ffe28a"/><ellipse cx="79" cy="121" rx="2.7" ry="4.5" fill="#ffe28a"/>
-            <ellipse cx="71.5" cy="114" rx="2.7" ry="4.5" fill="#ffe28a"/><ellipse cx="86.5" cy="114" rx="2.7" ry="4.5" fill="#ffe28a"/>
-            <circle cx="79" cy="114" r="2" fill="#ff8fb0"/>
+            <circle cx="27" cy="49" r="4" fill="#ffd36b"/>
+            <ellipse cx="27" cy="45.5" rx="1.8" ry="3" fill="#ffe28a"/><ellipse cx="27" cy="52.5" rx="1.8" ry="3" fill="#ffe28a"/>
+            <ellipse cx="22.5" cy="49" rx="1.8" ry="3" fill="#ffe28a"/><ellipse cx="31.5" cy="49" rx="1.8" ry="3" fill="#ffe28a"/>
+            <circle cx="27" cy="49" r="1.4" fill="#ff8fb0"/>
           </g>
           <g>
-            <circle cx="120" cy="120" r="5.5" fill="#ff9f43"/>
-            <ellipse cx="120" cy="114" rx="2.5" ry="4" fill="#ffb96a"/><ellipse cx="120" cy="126" rx="2.5" ry="4" fill="#ffb96a"/>
-            <ellipse cx="113" cy="120" rx="2.5" ry="4" fill="#ffb96a"/><ellipse cx="127" cy="120" rx="2.5" ry="4" fill="#ffb96a"/>
-            <circle cx="120" cy="120" r="2" fill="#ff8fb0"/>
+            <circle cx="47" cy="52" r="3.5" fill="#ff9f43"/>
+            <ellipse cx="47" cy="49" rx="1.6" ry="2.6" fill="#ffb96a"/><ellipse cx="47" cy="55" rx="1.6" ry="2.6" fill="#ffb96a"/>
+            <ellipse cx="43" cy="52" rx="1.6" ry="2.6" fill="#ffb96a"/><ellipse cx="51" cy="52" rx="1.6" ry="2.6" fill="#ffb96a"/>
+            <circle cx="47" cy="52" r="1.2" fill="#ff8fb0"/>
           </g>
         </g>
-        <g class="d-leg"><rect x="72" y="168" width="13" height="26" rx="6.5" fill="#f7e3b5" stroke="#3d2b1f" stroke-width="4"/></g>
-        <g class="d-leg"><rect x="115" y="168" width="13" height="26" rx="6.5" fill="#f7e3b5" stroke="#3d2b1f" stroke-width="4"/></g>
-        <path d="M150 158 Q172 146 168 122" stroke="#f7e3b5" stroke-width="9" fill="none" stroke-linecap="round"/>
-        <path d="M150 158 Q172 146 168 122" stroke="#3d2b1f" stroke-width="3" fill="none" stroke-linecap="round"/>
-        <ellipse cx="100" cy="152" rx="54" ry="40" fill="#f7e3b5" stroke="#3d2b1f" stroke-width="5"/>
-        <path d="M66 120 Q100 140 134 120" stroke="#d64545" stroke-width="6" fill="none" stroke-linecap="round"/>
-        <circle cx="100" cy="92" r="46" fill="#f7e3b5" stroke="#3d2b1f" stroke-width="5"/>
-        <path d="M58 70 C44 76 39 96 47 114 C51 124 61 122 62 110 C64 100 62 84 58 70 Z" fill="#f7e3b5" stroke="#3d2b1f" stroke-width="4" stroke-linejoin="round"/>
-        <path d="M142 70 C156 76 161 96 153 114 C149 124 139 122 138 110 C136 100 138 84 142 70 Z" fill="#f7e3b5" stroke="#3d2b1f" stroke-width="4" stroke-linejoin="round"/>
-        <ellipse cx="76" cy="102" rx="7" ry="4.5" fill="#ffb3c7" opacity=".75"/>
-        <ellipse cx="124" cy="102" rx="7" ry="4.5" fill="#ffb3c7" opacity=".75"/>
-        <path d="M84 94 q4 -4 8 0 M112 94 q4 -4 8 0" stroke="#3d2b1f" stroke-width="3" fill="none" stroke-linecap="round"/>
-        <path d="M90 102 Q100 108 110 102" stroke="#3d2b1f" stroke-width="3" fill="none" stroke-linecap="round"/>
-      </g>
-      <g class="heartFloat" opacity=".95">
-        <path d="M154 40 a5.5 5.5 0 0 1 5.5 5.5 c0 4.4 -5.5 7.7 -5.5 7.7 c0 0 -5.5 -3.3 -5.5 -7.7 a5.5 5.5 0 0 1 5.5 -5.5 Z" fill="#ff5f8f"/>
-        <path d="M56 54 a4 4 0 0 1 4 4 c0 3.2 -4 5.6 -4 5.6 c0 0 -4 -2.4 -4 -5.6 a4 4 0 0 1 4 -4 Z" fill="#ff8fb0"/>
-        <path d="M172 76 a3.5 3.5 0 0 1 3.5 3.5 c0 2.8 -3.5 4.9 -3.5 4.9 c0 0 -3.5 -2.1 -3.5 -4.9 a3.5 3.5 0 0 1 3.5 -3.5 Z" fill="#ffb3c7"/>
-      </g>
-    </svg>
+      </svg>
+      <span class="fx heartFloat" style="left:66%; top:8%; font-size:15px;">❤️</span>
+      <span class="fx heartFloat" style="left:22%; top:18%; font-size:12px; animation-delay:.5s;">💗</span>
+      <span class="fx heartFloat" style="left:76%; top:26%; font-size:11px; animation-delay:1s;">💕</span>
+    </div>
   </div>
   <div class="card" id="forgiveCard">
     <div class="stamp" id="stamp">已原谅<br>❤</div>
@@ -263,7 +327,7 @@
     <h2>狗子的道歉信 &amp; 承诺书</h2>
     <ul class="promise">
       <li data-e="💄">对不起：你的口红被我粗心带走，害你翻遍包包</li>
-      <li data-e="🔑">对不起：你的钥匙被我揣走，你差点进不了门</li>
+      <li data-e="🔑">对不起：带走了钥匙，你起不了电瓶车</li>
       <li data-e="💳">对不起：你的卡被我顺手带走，结账时干着急</li>
       <li data-e="🚬">对不起：你的烟被我“没收”，害你到处找</li>
       <li data-e="❤️">承诺：你的东西我绝不带走，碰之前一定先问你</li>
@@ -274,7 +338,7 @@
   </div>
 </div>
 
-<footer>本券永久有效 · 认错中的狗自制</footer>
+<footer>本券永久有效 · 认错中的狗自制 · 狗形象:OpenMoji(CC-BY-SA 4.0)</footer>
 
 <script>
 /* ===== anime.js v3.2.2 (MIT License, https://animejs.com) ===== */
@@ -295,15 +359,15 @@ const CRIES = ["老婆出气了没？","我认错了真的!!","随便打，你�
 
 const STATE = { normal:0, dizzy:1, bruised:2 };
 function showState(s){
-  document.querySelector(".eyes-normal").style.display  = s===0 ? "" : "none";
-  document.querySelector(".eyes-dizzy").style.display  = s===1 ? "" : "none";
-  document.querySelector(".eyes-cry").style.display    = s===2 ? "" : "none";
-  $("starsSpin").style.display = s>=1 ? "" : "none";
-  $("bumpG").style.display     = s>=2 ? "" : "none";
-  $("tearL").style.display     = s>=2 ? "" : "none";
-  $("tearR").style.display     = s>=2 ? "" : "none";
-  document.querySelector(".mouth").style.display     = s===2 ? "none" : "";
-  document.querySelector(".mouth-sad").style.display = s===2 ? "" : "none";
+  const on = e => e.style.display = "";
+  const off = e => e.style.display = "none";
+  off($("fxStar1")); off($("fxStar2")); off($("fxStar3"));
+  off($("fxBump"));
+  off($("fxEyeL")); off($("fxEyeR"));
+  off($("fxEyeXL")); off($("fxEyeXR"));
+  off($("fxTearL")); off($("fxTearR"));
+  if(s >= 1){ on($("fxStar1")); on($("fxStar2")); on($("fxStar3")); on($("fxEyeL")); on($("fxEyeR")); }
+  if(s >= 2){ off($("fxEyeL")); off($("fxEyeR")); on($("fxEyeXL")); on($("fxEyeXR")); on($("fxBump")); on($("fxTearL")); on($("fxTearR")); }
   const box = $("dogBox");
   box.classList.toggle("wobble",  s===1);
   box.classList.toggle("tremble", s===2);
@@ -414,23 +478,24 @@ function heartsBurst(){
   }
 }
 
-/* ---------- 受击形变：anime.js 开源动画（squash & stretch） ---------- */
+/* ---------- 受击形变：开源动画库 anime.js（squash & stretch） ---------- */
 function kickDog(){
+  /* 狗本体（含状态特效层）一起受压拉弹：真正的受击形变 */
   anime({
-    targets: "#dogG",
+    targets: "#dogInner",
     scaleY: [1, 0.78, 1.08, 1],
     scaleX: [1, 1.14, 0.95, 1],
     rotate: [0, -9, 6, -3, 0],
     translateY: [0, 9, -6, 0],
     duration: 420,
     easing: "easeOutElastic(1,.55)",
-    transformOrigin: "50% 62%"
+    transformOrigin: "50% 70%"
   });
 }
 
 /* ---------- game ---------- */
 let hits = 0, started = false;
-// 没有固定目标：气出多少她说她算，随时可原谅
+const FULL = 50;
 
 function showScreen(id){
   ["sStart","sGame","sFinal"].forEach(s=>$(s).classList.add("hidden"));
@@ -445,7 +510,7 @@ function onHit(){
   if(!started) return;
   hits++;
   $("hitCount").textContent = hits;
-  const pct = Math.min(100, Math.round(hits*5));
+  const pct = Math.min(100, Math.round(hits/FULL*100));
   $("pct").textContent = pct;
   $("barFill").style.width = pct+"%";
   slap();
@@ -454,26 +519,35 @@ function onHit(){
   if(Math.random() < 0.9) cryBubble();
 
   let s = STATE.normal;
-  if(hits >= 8) s = STATE.dizzy;
-  if(hits >= 18) s = STATE.bruised;
+  if(hits >= 20) s = STATE.dizzy;
+  if(hits >= 40) s = STATE.bruised;
   showState(s);
 
-  if(hits === 8){ $("gameSub").textContent = "打中啦！他眼冒金星…"; ding(); }
-  if(hits === 18){ $("gameSub").textContent = "呜呜呜…打哭了！肿包都出来了，气该消了吧~"; ding(); }
-  let label;
-  if(hits < 8)       label = "她还很生气… 继续打！("+pct+"%)";
-  else if(hits < 18) label = "有点解气了… 继续！("+pct+"%)";
-  else               label = "差不多了！再打几下，气够了就原谅他 ("+pct+"%)";
-  $("barLabel").textContent = label;
+  if(hits === 10){ $("gameSub").textContent = "打中啦！小狗开始眼冒金星… 出气进度 20%"; ding(); }
+  if(hits === 20){ $("gameSub").textContent = "星星在它头顶转圈圈… 出气进度 40%"; ding(); }
+  if(hits === 40){ $("gameSub").textContent = "呜呜呜…打哭了！肿包都出来了，气该消了吧~"; ding(); }
+  if(hits >= FULL){
+    $("pct").textContent = 100;
+    $("barFill").style.width = "100%";
+    $("barLabel").textContent = "气出够了！快原谅他吧！！";
+    $("btnForgiveQuick").textContent = "气消了！盖原谅章 ❤️";
+    ding(); fanfare();
+  } else {
+    let label;
+    if(hits < 10)      label = "还很生气… 继续打！("+pct+"%)";
+    else if(hits < 20) label = "有点解气了… 继续！("+pct+"%)";
+    else if(hits < 30) label = "差不多了… 再打几下！("+pct+"%)";
+    else if(hits < 40) label = "快消气了！再打几下发发威 ("+pct+"%)";
+    else               label = "再打几下就够啦 ("+pct+"%)";
+    if(hits === 30) label = "他大喊：老婆出气了没？我认错了真的!! 😭";
+    $("barLabel").textContent = label;
+  }
 }
 
 function finish(){
   showScreen("sFinal");
   fanfare();
   confetti();
-  $("pct").textContent = 100;
-  $("barFill").style.width = "100%";
-  $("barLabel").textContent = "气消了！原谅券已盖章 ❤️";
   $("finalHits").textContent = hits;
   $("forgiveCard").classList.remove("hidden");
   $("promiseCard").classList.add("hidden");
@@ -492,7 +566,7 @@ function restart(){
   $("hitCount").textContent = 0;
   $("pct").textContent = 0;
   $("barFill").style.width = "0%";
-  $("barLabel").textContent = "她还很生气… 打我吧！";
+  $("barLabel").textContent = "还很生气… 打我吧！";
   $("gameSub").textContent = "连点屏幕出气！气出够了随时原谅他 👇";
   $("btnForgiveQuick").textContent = "我气消了，原谅他 ❤️";
   showState(STATE.normal);
