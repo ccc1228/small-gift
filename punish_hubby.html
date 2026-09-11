@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="theme-color" content="#ffe4ec">
-<title>惩罚揣走东西的狗</title>
+<title>打我出气，气够了就原谅我</title>
 <style>
   * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
   html,body { height:100%; }
@@ -15,72 +15,80 @@
     color:#5a2a3a;
   }
   .bg-hearts { position:fixed; inset:0; pointer-events:none; z-index:0; overflow:hidden; }
-  .bg-hearts span { position:absolute; bottom:-40px; animation:floatUp linear infinite; opacity:.45; }
-  @keyframes floatUp { 0%{ transform:translateY(0) rotate(0deg); opacity:.5; } 100%{ transform:translateY(-110vh) rotate(360deg); opacity:0; } }
+  .bg-hearts span { position:absolute; bottom:-40px; animation:floatUp linear infinite; opacity:.5; }
+  @keyframes floatUp { 0%{ transform:translateY(0) rotate(0); opacity:.55; } 100%{ transform:translateY(-110vh) rotate(360deg); opacity:0; } }
 
   .screen { position:fixed; inset:0; z-index:1; display:flex; flex-direction:column; align-items:center;
     justify-content:center; text-align:center; padding:20px; transition:opacity .4s, transform .4s; }
   .hidden { opacity:0; pointer-events:none; transform:scale(.96); }
 
-  h1 { font-size:clamp(24px,6.5vw,38px); font-weight:800; letter-spacing:1px;
-    text-shadow:0 2px 0 #fff; margin-bottom:6px; }
+  h1 { font-size:clamp(26px,7vw,40px); font-weight:800; letter-spacing:1px;
+    text-shadow:0 2px 0 #fff; margin-bottom:8px; line-height:1.25; }
   .sub { font-size:clamp(13px,3.6vw,17px); opacity:.9; margin-bottom:8px; line-height:1.6; font-weight:600; }
 
-  .dogbox { position:relative; width:min(60vw,280px); margin:8px auto; }
-  .dogbox svg { width:100%; height:auto; display:block; overflow:visible; }
+  .dogbox { position:relative; width:min(62vw,290px); aspect-ratio:1/1; margin:10px auto; }
+  .dogbox svg { width:100%; height:100%; display:block;
+    filter:drop-shadow(0 8px 18px rgba(214,69,114,.25)); }
   .bounce { animation:bounce 2.2s ease-in-out infinite; }
-  @keyframes bounce { 0%,100%{ transform:translateY(0);} 50%{ transform:translateY(-8px);} }
-  .shake { animation:shake .3s linear; }
+  @keyframes bounce { 0%,100%{ transform:translateY(0);} 50%{ transform:translateY(-10px);} }
+  .shake { animation:shake .28s linear; }
   @keyframes shake { 0%,100%{transform:translate(0,0) rotate(0);} 20%{transform:translate(-6px,2px) rotate(-2deg);}
     40%{transform:translate(6px,-3px) rotate(2deg);} 60%{transform:translate(-5px,-2px) rotate(-1.5deg);}
     80%{transform:translate(5px,3px) rotate(1.5deg);} }
-  .flip { animation:flip .5s ease-out; }
-  @keyframes flip { 0%{transform:rotate(0) scale(1);} 45%{transform:rotate(-10deg) scale(1.15);} 100%{transform:rotate(0) scale(1);} }
 
-  .bubble { position:absolute; top:-34px; left:50%; transform:translateX(-50%); white-space:nowrap;
-    font-weight:800; font-size:clamp(13px,3.8vw,16px); color:#d6336c; background:#fff;
+  .bubble { position:absolute; top:-26px; left:50%; transform:translateX(-50%); white-space:nowrap;
+    font-weight:800; font-size:clamp(14px,4vw,17px); color:#d6336c; background:#fff;
     padding:6px 12px; border-radius:18px; box-shadow:0 4px 12px rgba(214,51,108,.25); z-index:3; }
   .cry { position:absolute; top:-40px; left:50%; transform:translateX(-50%); white-space:nowrap;
-    font-weight:800; font-size:clamp(14px,4.2vw,18px); color:#d6336c; background:#fff;
+    font-weight:800; font-size:clamp(15px,4.4vw,19px); color:#d6336c; background:#fff;
     padding:6px 14px; border-radius:20px; box-shadow:0 4px 14px rgba(214,51,108,.3); z-index:3;
     animation:popCry .9s ease-out forwards; }
   @keyframes popCry { 0%{opacity:0; transform:translateX(-50%) scale(.5) translateY(8px);}
     20%{opacity:1; transform:translateX(-50%) scale(1.05) translateY(0);}
     75%{opacity:1;} 100%{opacity:0; transform:translateX(-50%) scale(.9) translateY(-18px);} }
 
-  .btn { margin-top:14px; padding:13px 34px; font-size:clamp(16px,4.8vw,21px); font-weight:800;
+  .fx { position:absolute; z-index:4; pointer-events:none; font-size:26px; animation:fxPop .7s ease-out forwards; }
+  @keyframes fxPop { 0%{opacity:1; transform:translate(0,0) scale(.5) rotate(0);}
+    100%{opacity:0; transform:translate(var(--dx),var(--dy)) scale(1.4) rotate(var(--dr));} }
+  .star-float { position:absolute; z-index:4; pointer-events:none; font-size:30px;
+    animation:starSpin 1.6s linear infinite; }
+  @keyframes starSpin { 0%{transform:translate(0,0) rotate(0) scale(.8);} 50%{transform:translate(0,-12px) rotate(180deg) scale(1.1);}
+    100%{transform:translate(0,0) rotate(360deg) scale(.8);} }
+  .tear { position:absolute; z-index:4; pointer-events:none; width:8px; height:14px; border-radius:50% 50% 50% 50%/60% 60% 40% 40%;
+    background:rgba(120,180,255,.85); animation:tearFall 1s ease-in infinite; }
+  @keyframes tearFall { 0%{opacity:1; transform:translateY(0) scale(1);} 90%{opacity:1;} 100%{opacity:0; transform:translateY(46px) scale(.7);} }
+  .heart-up { position:absolute; z-index:4; pointer-events:none; font-size:24px; animation:heartUp 1.3s ease-out forwards; }
+  @keyframes heartUp { 0%{opacity:1; transform:translate(0,0) scale(.6);} 100%{opacity:0; transform:translate(0,-64px) scale(1.2);} }
+
+  .ticker { margin-top:8px; font-size:clamp(13px,3.6vw,16px); background:rgba(255,255,255,.75);
+    padding:8px 16px; border-radius:30px; box-shadow:0 3px 10px rgba(214,69,114,.15); min-height:38px; }
+
+  .btn { margin-top:14px; padding:14px 36px; font-size:clamp(16px,4.8vw,21px); font-weight:800;
     background:linear-gradient(135deg,#ff6b9d,#ff3d7f); color:#fff; border:none; border-radius:50px;
     box-shadow:0 6px 18px rgba(255,61,127,.45), inset 0 -3px 0 rgba(0,0,0,.12);
     cursor:pointer; transition:transform .1s; }
   .btn:active { transform:scale(.94); }
   .btn.soft { background:linear-gradient(135deg,#ffb3c7,#ff8fb0); box-shadow:0 5px 14px rgba(255,143,176,.4); }
-  .btn.small { padding:10px 24px; font-size:clamp(14px,4vw,17px); margin-top:10px; }
-
-  .ticker { margin-top:10px; font-size:clamp(13px,3.6vw,16px); background:rgba(255,255,255,.75);
-    padding:8px 16px; border-radius:30px; box-shadow:0 3px 10px rgba(214,69,114,.15); min-height:38px; }
+  .btn.small { padding:10px 26px; font-size:clamp(14px,4vw,17px); margin-top:12px; }
   .tip { margin-top:12px; font-size:12px; opacity:.6; }
 
-  .hud { width:min(88vw,380px); margin-bottom:8px; }
+  .hud { width:min(88vw,380px); margin-bottom:6px; }
   .hud-row { display:flex; justify-content:space-between; align-items:center; font-weight:800;
     font-size:clamp(14px,4vw,18px); margin-bottom:6px; }
   .bar { height:16px; background:rgba(255,255,255,.8); border-radius:20px; overflow:hidden;
     box-shadow:inset 0 2px 4px rgba(0,0,0,.08); }
   .bar-fill { height:100%; width:0%; border-radius:20px;
     background:linear-gradient(90deg,#ffd36b,#ff8b3d,#ff4d6d); transition:width .25s ease; }
-  .bar-label { margin-top:6px; font-size:clamp(12px,3.4vw,15px); opacity:.85; font-weight:700; }
+  .bar-label { margin-top:6px; font-size:clamp(12px,3.4vw,15px); opacity:.9; font-weight:800; min-height:30px; }
 
   .particle { position:fixed; z-index:5; pointer-events:none; font-size:24px; animation:popP .7s ease-out forwards; }
   @keyframes popP { 0%{opacity:1; transform:translate(0,0) scale(.6) rotate(0);}
     100%{opacity:0; transform:translate(var(--dx),var(--dy)) scale(1.3) rotate(var(--dr));} }
-  .boop { position:absolute; z-index:4; pointer-events:none; font-size:clamp(18px,6vw,30px);
-    animation:boopAni .8s ease-out forwards; }
-  @keyframes boopAni { 0%{opacity:1; transform:translate(0,0) scale(.5) rotate(0);}
-    55%{opacity:1;} 100%{opacity:0; transform:translate(var(--dx),var(--dy)) scale(1.4) rotate(var(--dr));} }
 
   .card { width:min(88vw,360px); background:#fff; border-radius:24px; padding:22px 18px;
     box-shadow:0 12px 34px rgba(214,69,114,.3); border:3px solid #ffd1e0; position:relative; }
   .card h2 { font-size:clamp(20px,5.6vw,26px); font-weight:800; color:#ff3d7f; margin-bottom:8px; }
-  .card p { font-size:clamp(13px,3.7vw,15px); line-height:1.75; opacity:.9; }
+  .card p { font-size:clamp(13px,3.7vw,15px); line-height:1.8; opacity:.92; }
   .stamp { position:absolute; top:14px; right:14px; width:74px; height:74px; border:4px solid #e0245e;
     border-radius:50%; color:#e0245e; font-weight:800; font-size:14px; display:flex; align-items:center;
     justify-content:center; transform:rotate(-18deg) scale(0); opacity:.85; }
@@ -97,31 +105,30 @@
   .confetti { position:fixed; z-index:4; pointer-events:none; top:-20px; border-radius:3px;
     animation:fall linear forwards; }
   @keyframes fall { 0%{transform:translateY(-20px) rotate(0);} 100%{transform:translateY(105vh) rotate(720deg);} }
-  .heart-burst { position:fixed; z-index:6; pointer-events:none; animation:heartUp 1.4s ease-out forwards; }
-  @keyframes heartUp { 0%{opacity:1; transform:translate(-50%,0) scale(.4);} 60%{opacity:1;}
+
+  .heart-burst { position:fixed; z-index:6; pointer-events:none; animation:heartUpBig 1.4s ease-out forwards; }
+  @keyframes heartUpBig { 0%{opacity:1; transform:translate(-50%,0) scale(.4);} 60%{opacity:1;}
     100%{opacity:0; transform:translate(-50%,-60vh) scale(1.3);} }
 
   #sFinal .card { margin-top:10px; }
-  #sFinal .dogbox { margin-top:50px; }
+  #sFinal .dogbox { margin-top:8px; }
   footer { position:fixed; bottom:8px; width:100%; text-align:center; font-size:11px; opacity:.5; z-index:2; }
 
-  /* ---- SVG 动画：被打效果 ---- */
-  .st-kick { transform-origin:center; }
-  .kick .st-kick { animation:kickT .4s ease-out; }
-  @keyframes kickT { 0%,100%{transform:rotate(0) translate(0,0);} 30%{transform:rotate(-16deg) translate(-6px,2px);} 60%{transform:rotate(10deg) translate(6px,-2px);} }
-  #starsSpin { animation:spinStar 1s linear infinite; transform-origin:100px 40px; }
-  @keyframes spinStar { 0%{transform:rotate(0);} 100%{transform:rotate(360deg);} }
-  .dizzy-eye { animation:zei .5s ease-in-out infinite alternate; transform-origin:center; }
-  @keyframes zei { 0%{transform:scaleY(1);} 100%{transform:scaleY(.2);} }
-  #tearL { animation:tearDrop 1.1s ease-in infinite; }
-  #tearR { animation:tearDrop 1.3s ease-in infinite; }
-  @keyframes tearDrop { 0%{transform:translateY(0); opacity:0;} 25%{opacity:1;} 100%{transform:translateY(16px); opacity:0;} }
-  .bump { animation:bumpPop .5s cubic-bezier(.2,1.8,.4,1); transform-origin:70px 26px; }
-  @keyframes bumpPop { 0%{transform:scale(0) rotate(0);} 60%{transform:scale(1.15) rotate(-8deg);} 100%{transform:scale(1) rotate(0);} }
-  .heartFloat { animation:heartF 2.2s ease-in-out infinite; }
-  @keyframes heartF { 0%,100%{transform:translateY(0) scale(1); opacity:.9;} 50%{transform:translateY(-8px) scale(1.15); opacity:1;} }
-  .flowerSway { animation:sway 2.4s ease-in-out infinite; transform-origin:100px 150px; }
-  @keyframes sway { 0%,100%{transform:rotate(-3deg);} 50%{transform:rotate(3deg);} }
+  /* ===== SVG 小狗状态组 ===== */
+  .st, use.st { display:none; }
+  .st.on, use.st.on { display:block; }
+  .ear { transform-origin:center; transform-box:fill-box; }
+  .stDizzy.on .ear, .stBruised.on .ear { animation:earWobble 1.2s ease-in-out infinite; }
+  @keyframes earWobble { 0%,100%{ transform:rotate(0deg);} 50%{ transform:rotate(-14deg);} }
+  .tail { transform-origin:200px 150px; }
+  .stDizzy.on .tail, .stBruised.on .tail { animation:tailWag .5s ease-in-out infinite; }
+  @keyframes tailWag { 0%,100%{ transform:rotate(0deg);} 50%{ transform:rotate(22deg);} }
+  .blink { animation:blinkAni 3.2s ease-in-out infinite; }
+  @keyframes blinkAni { 0%,92%,100%{ transform:scaleY(1);} 96%{ transform:scaleY(.12);} }
+  .bump { transform-origin:center; transform-box:fill-box; animation:bumpPop .5s cubic-bezier(.2,1.8,.4,1); }
+  @keyframes bumpPop { 0%{ transform:scale(0);} 100%{ transform:scale(1);} }
+  .flower { transform-origin:center; transform-box:fill-box; animation:flowerBob 1.6s ease-in-out infinite; }
+  @keyframes flowerBob { 0%,100%{ transform:translateY(0) rotate(-4deg);} 50%{ transform:translateY(-5px) rotate(4deg);} }
 </style>
 </head>
 <body>
@@ -129,139 +136,107 @@
 
 <!-- START -->
 <div class="screen" id="sStart">
-  <h1>惩罚<br>揣走东西的狗</h1>
-  <div class="sub">对不起，是我太粗心<br>带走了你的东西…<br>随便打我出气，<br>打到你觉得气出够了为止！</div>
+  <h1>打我出气吧！<br>气出够了，就原谅我 ❤️</h1>
+  <div class="sub">对不起，是我太粗心带走了你的东西…<br>别忍着了，打我出气！<br>随便打，打到你觉得气出够了为止！</div>
   <div class="dogbox bounce">
-    <div class="bubble">是我带走的…对不起</div>
-    <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" aria-label="揣走东西的狗">
-      <g class="st-kick">
-        <path d="M60 118 L46 96 C42 90 46 82 53 82 C60 82 66 90 63 96 Z" fill="#f5d9a8" stroke="#6b4f2e" stroke-width="3" stroke-linejoin="round"/>
-        <path d="M140 118 L154 96 C158 90 154 82 147 82 C140 82 134 90 137 96 Z" fill="#f5d9a8" stroke="#6b4f2e" stroke-width="3" stroke-linejoin="round"/>
-        <path d="M100 96 C78 96 60 112 60 132 C60 158 78 172 100 172 C122 172 140 158 140 132 C140 112 122 96 100 96 Z" fill="#fff7e6" stroke="#6b4f2e" stroke-width="3"/>
-        <circle cx="100" cy="140" r="15" fill="#fff7e6" stroke="#6b4f2e" stroke-width="3"/>
-        <path d="M78 178 Q75 190 68 192" stroke="#6b4f2e" stroke-width="3" fill="none" stroke-linecap="round"/>
-        <path d="M122 178 Q125 190 132 192" stroke="#6b4f2e" stroke-width="3" fill="none" stroke-linecap="round"/>
-        <path d="M150 150 Q172 138 168 118" stroke="#f5d9a8" stroke-width="5" fill="none" stroke-linecap="round"/>
-        <path d="M152 148 Q158 144 158 146" stroke="#6b4f2e" stroke-width="3" fill="none" stroke-linecap="round"/>
-        <ellipse cx="80" cy="108" rx="7" ry="4.5" fill="#ffb3c7" opacity=".85"/>
-        <ellipse cx="120" cy="108" rx="7" ry="4.5" fill="#ffb3c7" opacity=".85"/>
-        <circle cx="86" cy="96" r="4.5" fill="#3a2a1a"/>
-        <circle cx="114" cy="96" r="4.5" fill="#3a2a1a"/>
-        <path d="M90 106 Q100 112 110 106" stroke="#6b4f2e" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-        <path d="M96 104 Q100 101 104 104" stroke="#6b4f2e" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <div class="bubble">是我带走的…对不起汪！</div>
+    <svg viewBox="0 0 240 240" xmlns="http://www.w3.org/2000/svg" id="dogSvg">
+      <g id="stNorm" class="st on">
+        <path class="tail" d="M 186 152 q 30 -8 24 -44" stroke="#a8763e" stroke-width="6" fill="none" stroke-linecap="round"/>
+        <path d="M 60 88 q -18 42 8 66 q 14 10 30 -6 z" fill="#e8b96f" stroke="#a8763e" stroke-width="4" stroke-linejoin="round"/>
+        <path d="M 180 88 q 18 42 -8 66 q -14 10 -30 -6 z" fill="#e8b96f" stroke="#a8763e" stroke-width="4" stroke-linejoin="round"/>
+        <ellipse cx="120" cy="196" rx="56" ry="40" fill="#f5d6a8" stroke="#a8763e" stroke-width="4"/>
+        <circle cx="120" cy="100" r="66" fill="#f7ddb2" stroke="#a8763e" stroke-width="4"/>
+        <ellipse cx="120" cy="128" rx="8" ry="6" fill="#6b4a2a"/>
+        <path d="M 106 142 Q 120 156 134 142" stroke="#a8763e" stroke-width="4" fill="none" stroke-linecap="round"/>
+        <circle class="blink" cx="94" cy="102" r="7" fill="#4a3626"/>
+        <circle class="blink" cx="146" cy="102" r="7" fill="#4a3626"/>
+        <circle cx="96" cy="100" r="2.4" fill="#fff"/>
+        <circle cx="148" cy="100" r="2.4" fill="#fff"/>
+        <circle cx="74" cy="134" r="10" fill="#ff9eb5" opacity=".55"/>
+        <circle cx="166" cy="134" r="10" fill="#ff9eb5" opacity=".55"/>
+        <path d="M 104 128 q -3 -5 -8 -3" stroke="#a8763e" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <path d="M 136 128 q 3 -5 8 -3" stroke="#a8763e" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <circle cx="92" cy="186" r="13" fill="#fff8f0" stroke="#a8763e" stroke-width="3.5"/>
+        <circle cx="148" cy="186" r="13" fill="#fff8f0" stroke="#a8763e" stroke-width="3.5"/>
+      </g>
+      <g id="stDizzy" class="st">
+        <path class="tail" d="M 186 152 q 30 -8 24 -44" stroke="#a8763e" stroke-width="6" fill="none" stroke-linecap="round"/>
+        <path class="ear" d="M 60 88 q -18 42 8 66 q 14 10 30 -6 z" fill="#e8b96f" stroke="#a8763e" stroke-width="4" stroke-linejoin="round"/>
+        <path class="ear" d="M 180 88 q 18 42 -8 66 q -14 10 -30 -6 z" fill="#e8b96f" stroke="#a8763e" stroke-width="4" stroke-linejoin="round"/>
+        <ellipse cx="120" cy="196" rx="56" ry="40" fill="#f5d6a8" stroke="#a8763e" stroke-width="4"/>
+        <circle cx="120" cy="100" r="66" fill="#f7ddb2" stroke="#a8763e" stroke-width="4"/>
+        <path d="M 84 94 l 20 18 M 104 94 l -20 18" stroke="#4a3626" stroke-width="5" stroke-linecap="round"/>
+        <path d="M 136 94 l 20 18 M 156 94 l -20 18" stroke="#4a3626" stroke-width="5" stroke-linecap="round"/>
+        <path d="M 118 128 q 2 4 4 4 q 2 0 4 -4" stroke="#6b4a2a" stroke-width="4" fill="none" stroke-linecap="round"/>
+        <path d="M 100 146 Q 120 162 140 146" stroke="#a8763e" stroke-width="4" fill="none" stroke-linecap="round"/>
+        <circle cx="74" cy="134" r="10" fill="#ff9eb5" opacity=".55"/>
+        <circle cx="166" cy="134" r="10" fill="#ff9eb5" opacity=".55"/>
+        <circle cx="92" cy="186" r="13" fill="#fff8f0" stroke="#a8763e" stroke-width="3.5"/>
+        <circle cx="148" cy="186" r="13" fill="#fff8f0" stroke="#a8763e" stroke-width="3.5"/>
+      </g>
+      <g id="stBruised" class="st">
+        <path class="tail" d="M 186 152 q 30 -8 24 -44" stroke="#a8763e" stroke-width="6" fill="none" stroke-linecap="round"/>
+        <path class="ear" d="M 60 88 q -18 42 8 66 q 14 10 30 -6 z" fill="#e8b96f" stroke="#a8763e" stroke-width="4" stroke-linejoin="round"/>
+        <path class="ear" d="M 180 88 q 18 42 -8 66 q -14 10 -30 -6 z" fill="#e8b96f" stroke="#a8763e" stroke-width="4" stroke-linejoin="round"/>
+        <ellipse cx="120" cy="196" rx="56" ry="40" fill="#f5d6a8" stroke="#a8763e" stroke-width="4"/>
+        <circle cx="120" cy="100" r="66" fill="#f7ddb2" stroke="#a8763e" stroke-width="4"/>
+        <g class="bump">
+          <path d="M 94 30 q 26 -26 52 0 q 16 8 0 16 q -24 12 -52 0 q -16 -8 0 -16 z" fill="#ff8b9d" stroke="#d6336c" stroke-width="3.5"/>
+          <path d="M 120 20 v 22 M 109 31 h 22" stroke="#fff" stroke-width="4" stroke-linecap="round"/>
+        </g>
+        <path d="M 84 98 q 10 12 20 0" stroke="#4a3626" stroke-width="5" fill="none" stroke-linecap="round"/>
+        <path d="M 136 98 q 10 12 20 0" stroke="#4a3626" stroke-width="5" fill="none" stroke-linecap="round"/>
+        <ellipse cx="96" cy="112" rx="12" ry="7" fill="#8a6bb5" opacity=".8"/>
+        <ellipse cx="144" cy="112" rx="12" ry="7" fill="#8a6bb5" opacity=".8"/>
+        <path d="M 118 126 q 2 8 4 8 q 2 0 4 -8" stroke="#6b4a2a" stroke-width="4" fill="none" stroke-linecap="round"/>
+        <path d="M 98 140 q 22 34 44 0" stroke="#a8763e" stroke-width="4.5" fill="none" stroke-linecap="round"/>
+        <path d="M 104 150 q 6 14 16 14 q 10 0 16 -14" stroke="#d6336c" stroke-width="4" fill="none" stroke-linecap="round"/>
+        <circle cx="92" cy="186" r="13" fill="#fff8f0" stroke="#a8763e" stroke-width="3.5"/>
+        <circle cx="148" cy="186" r="13" fill="#fff8f0" stroke="#a8763e" stroke-width="3.5"/>
+      </g>
+      <g id="stSorry" class="st">
+        <path class="tail" d="M 186 152 q 30 -8 24 -44" stroke="#a8763e" stroke-width="6" fill="none" stroke-linecap="round"/>
+        <path class="ear" d="M 60 88 q -14 40 -2 64 q 14 12 30 -6 z" fill="#e8b96f" stroke="#a8763e" stroke-width="4" stroke-linejoin="round"/>
+        <path class="ear" d="M 180 88 q 14 40 2 64 q -14 12 -30 -6 z" fill="#e8b96f" stroke="#a8763e" stroke-width="4" stroke-linejoin="round"/>
+        <ellipse cx="120" cy="196" rx="56" ry="40" fill="#f5d6a8" stroke="#a8763e" stroke-width="4"/>
+        <circle cx="120" cy="100" r="66" fill="#f7ddb2" stroke="#a8763e" stroke-width="4"/>
+        <path d="M 86 100 q 8 -14 16 0" stroke="#4a3626" stroke-width="5" fill="none" stroke-linecap="round"/>
+        <path d="M 138 100 q 8 -14 16 0" stroke="#4a3626" stroke-width="5" fill="none" stroke-linecap="round"/>
+        <path d="M 108 142 Q 120 156 132 142" stroke="#a8763e" stroke-width="4" fill="none" stroke-linecap="round"/>
+        <circle cx="108" cy="148" r="16" fill="#ff8b9d" stroke="#d6336c" stroke-width="3.5"/>
+        <circle cx="108" cy="148" r="8" fill="#ffd36b" stroke="#e8a13a" stroke-width="2.5"/>
+        <circle cx="108" cy="148" r="2.5" fill="#e8a13a"/>
+        <path d="M 108 164 q 24 12 44 0" stroke="#4a8a3e" stroke-width="4" fill="none" stroke-linecap="round"/>
+        <circle cx="74" cy="134" r="10" fill="#ff9eb5" opacity=".55"/>
+        <circle cx="166" cy="134" r="10" fill="#ff9eb5" opacity=".55"/>
+        <path d="M 88 182 q 8 8 16 0 M 136 182 q 8 8 16 0" stroke="#a8763e" stroke-width="4" fill="none" stroke-linecap="round"/>
       </g>
     </svg>
   </div>
-  <div class="ticker">📦 这次又被带走的：<span id="tickerText">钥匙 🔑</span></div>
+  <div class="ticker">📦 这次又被我揣走的：<span id="tickerText">口红 💄</span></div>
   <button class="btn" id="btnStart">开始出气！💢</button>
-  <div class="tip">点击屏幕即可出气 · 声音记得开 🔊</div>
+  <div class="tip">点屏幕打我出气 · 声音记得开 🔊</div>
 </div>
 
 <!-- GAME -->
 <div class="screen hidden" id="sGame">
   <div class="hud">
-    <div class="hud-row"><span>👊 已打 <b id="hitCount">0</b> 下</span><span>出气进度 <b id="pct">0</b>%</span></div>
-    <div class="bar"><div class="bar-fill" id="barFill"></div></div>
-    <div class="bar-label" id="barLabel">她还很生气… 打我吧！</div>
+    <div class="hud-row"><span>👊 已打 <b id="hitCount">0</b> 下</span><span>老婆的气还剩 <b id="pct">100</b>%</span></div>
+    <div class="bar"><div class="bar-fill" id="barFill" style="width:100%"></div></div>
+    <div class="bar-label" id="barLabel">她还很生气… 继续打！</div>
   </div>
   <div class="dogbox" id="dogBox">
-    <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" aria-label="出气的狗">
-      <!-- 金星球（冒金星时显示） -->
-      <g id="starsSpin" style="display:none">
-        <g fill="#ffc93c" stroke="#e09a00" stroke-width="1.5">
-          <path d="M100 14 l3.2 6.4 7-.9 -4.8 5.3 1.4 7 -6.8-3.1 -6.8 3.1 1.4-7 -4.8-5.3 7 .9 Z"/>
-          <path d="M62 34 l2.6 5.1 5.6-.7 -3.8 4.2 1.1 5.6 -5.4-2.5 -5.4 2.5 1.1-5.6 -3.8-4.2 5.6.7 Z"/>
-          <path d="M138 34 l2.6 5.1 5.6-.7 -3.8 4.2 1.1 5.6 -5.4-2.5 -5.4 2.5 1.1-5.6 -3.8-4.2 5.6.7 Z"/>
-        </g>
-      </g>
-      <!-- 头顶肿包（被打残时显示） -->
-      <g class="bump" id="bumpG" style="display:none">
-        <circle cx="70" cy="30" r="12" fill="#ff6b6b" stroke="#c0392b" stroke-width="2.5"/>
-        <path d="M64 30 l12 0 M70 24 l0 12" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/>
-      </g>
-      <g class="st-kick">
-        <path d="M60 118 L46 96 C42 90 46 82 53 82 C60 82 66 90 63 96 Z" fill="#f5d9a8" stroke="#6b4f2e" stroke-width="3" stroke-linejoin="round"/>
-        <path d="M140 118 L154 96 C158 90 154 82 147 82 C140 82 134 90 137 96 Z" fill="#f5d9a8" stroke="#6b4f2e" stroke-width="3" stroke-linejoin="round"/>
-        <path d="M100 96 C78 96 60 112 60 132 C60 158 78 172 100 172 C122 172 140 158 140 132 C140 112 122 96 100 96 Z" fill="#fff7e6" stroke="#6b4f2e" stroke-width="3"/>
-        <circle cx="100" cy="140" r="15" fill="#fff7e6" stroke="#6b4f2e" stroke-width="3"/>
-        <path d="M78 178 Q75 190 68 192" stroke="#6b4f2e" stroke-width="3" fill="none" stroke-linecap="round"/>
-        <path d="M122 178 Q125 190 132 192" stroke="#6b4f2e" stroke-width="3" fill="none" stroke-linecap="round"/>
-        <path d="M150 150 Q172 138 168 118" stroke="#f5d9a8" stroke-width="5" fill="none" stroke-linecap="round"/>
-        <path d="M152 148 Q158 144 158 146" stroke="#6b4f2e" stroke-width="3" fill="none" stroke-linecap="round"/>
-        <ellipse cx="80" cy="108" rx="7" ry="4.5" fill="#ffb3c7" opacity=".85"/>
-        <ellipse cx="120" cy="108" rx="7" ry="4.5" fill="#ffb3c7" opacity=".85"/>
-        <!-- 眼睛组：正常 / 星星晕 / X 哭 -->
-        <g class="eyes-normal">
-          <circle cx="86" cy="96" r="4.5" fill="#3a2a1a"/>
-          <circle cx="114" cy="96" r="4.5" fill="#3a2a1a"/>
-        </g>
-        <g class="eyes-dizzy" style="display:none">
-          <path class="dizzy-eye" d="M82 92 a4 4 0 1 1 .01 0 M90 100 a4 4 0 1 1 .01 0" stroke="#3a2a1a" stroke-width="2" fill="none"/>
-          <path class="dizzy-eye" d="M110 92 a4 4 0 1 1 .01 0 M118 100 a4 4 0 1 1 .01 0" stroke="#3a2a1a" stroke-width="2" fill="none"/>
-        </g>
-        <g class="eyes-cry" style="display:none">
-          <path d="M81 95 l10 0 M82 100 l10 0" stroke="#6b4f2e" stroke-width="2.5" stroke-linecap="round"/>
-          <path d="M109 95 l10 0 M110 100 l10 0" stroke="#6b4f2e" stroke-width="2.5" stroke-linecap="round"/>
-          <path id="tearL" d="M86 104 q2 6 0 9" stroke="#5ec8f5" stroke-width="3" fill="none" stroke-linecap="round"/>
-          <path id="tearR" d="M114 104 q2 6 0 9" stroke="#5ec8f5" stroke-width="3" fill="none" stroke-linecap="round"/>
-        </g>
-        <path class="mouth" d="M90 106 Q100 112 110 106" stroke="#6b4f2e" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-        <path class="mouth-sad" d="M92 112 Q100 105 108 112" stroke="#6b4f2e" stroke-width="2.5" fill="none" stroke-linecap="round" style="display:none"/>
-      </g>
+    <svg viewBox="0 0 240 240" xmlns="http://www.w3.org/2000/svg" id="dogSvgGame">
+      <use href="#stNorm"></use><use href="#stDizzy"></use><use href="#stBruised"></use><use href="#stSorry"></use>
     </svg>
   </div>
-  <div class="sub" id="gameSub">连点屏幕出气！气出够了随时原谅他 👇</div>
+  <div class="sub" id="gameSub">连点屏幕出气！气消了随时原谅他 👇</div>
   <button class="btn soft small" id="btnForgiveQuick">我气消了，原谅他 ❤️</button>
 </div>
 
 <!-- FINAL -->
 <div class="screen hidden" id="sFinal">
-  <div class="dogbox bounce">
-    <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" aria-label="捧花认错的小金毛">
-      <g class="flowerSway">
-        <path d="M96 170 L100 112 M104 170 L100 112" stroke="#4caf50" stroke-width="3" stroke-linecap="round"/>
-        <ellipse cx="90" cy="150" rx="7" ry="3" fill="#4caf50"/>
-        <ellipse cx="112" cy="146" rx="7" ry="3" fill="#4caf50"/>
-        <g>
-          <circle cx="100" cy="104" r="7" fill="#ff8fb0"/>
-          <ellipse cx="100" cy="96" rx="3.2" ry="5" fill="#ffa8c5"/><ellipse cx="100" cy="112" rx="3.2" ry="5" fill="#ffa8c5"/>
-          <ellipse cx="91" cy="104" rx="3.2" ry="5" fill="#ffa8c5"/><ellipse cx="109" cy="104" rx="3.2" ry="5" fill="#ffa8c5"/>
-          <circle cx="100" cy="104" r="2.5" fill="#ffd36b"/>
-        </g>
-        <g>
-          <circle cx="82" cy="112" r="5.5" fill="#ffd36b"/>
-          <ellipse cx="82" cy="106" rx="2.5" ry="4" fill="#ffe28a"/><ellipse cx="82" cy="118" rx="2.5" ry="4" fill="#ffe28a"/>
-          <ellipse cx="75.5" cy="112" rx="2.5" ry="4" fill="#ffe28a"/><ellipse cx="88.5" cy="112" rx="2.5" ry="4" fill="#ffe28a"/>
-          <circle cx="82" cy="112" r="2" fill="#ff8fb0"/>
-        </g>
-        <g>
-          <circle cx="116" cy="118" r="5" fill="#ff9f43"/>
-          <ellipse cx="116" cy="112.5" rx="2.3" ry="3.6" fill="#ffb96a"/><ellipse cx="116" cy="123.5" rx="2.3" ry="3.6" fill="#ffb96a"/>
-          <ellipse cx="110" cy="118" rx="2.3" ry="3.6" fill="#ffb96a"/><ellipse cx="122" cy="118" rx="2.3" ry="3.6" fill="#ffb96a"/>
-          <circle cx="116" cy="118" r="1.8" fill="#ff8fb0"/>
-        </g>
-      </g>
-      <g class="st-kick">
-        <path d="M60 118 L46 96 C42 90 46 82 53 82 C60 82 66 90 63 96 Z" fill="#f5d9a8" stroke="#6b4f2e" stroke-width="3" stroke-linejoin="round"/>
-        <path d="M140 118 L154 96 C158 90 154 82 147 82 C140 82 134 90 137 96 Z" fill="#f5d9a8" stroke="#6b4f2e" stroke-width="3" stroke-linejoin="round"/>
-        <path d="M100 96 C78 96 60 112 60 132 C60 158 78 172 100 172 C122 172 140 158 140 132 C140 112 122 96 100 96 Z" fill="#fff7e6" stroke="#6b4f2e" stroke-width="3"/>
-        <circle cx="100" cy="140" r="15" fill="#fff7e6" stroke="#6b4f2e" stroke-width="3"/>
-        <path d="M78 178 Q75 190 68 192" stroke="#6b4f2e" stroke-width="3" fill="none" stroke-linecap="round"/>
-        <path d="M122 178 Q125 190 132 192" stroke="#6b4f2e" stroke-width="3" fill="none" stroke-linecap="round"/>
-        <path d="M150 150 Q172 138 168 118" stroke="#f5d9a8" stroke-width="5" fill="none" stroke-linecap="round"/>
-        <path d="M152 148 Q158 144 158 146" stroke="#6b4f2e" stroke-width="3" fill="none" stroke-linecap="round"/>
-        <ellipse cx="80" cy="108" rx="7" ry="4.5" fill="#ffb3c7" opacity=".85"/>
-        <ellipse cx="120" cy="108" rx="7" ry="4.5" fill="#ffb3c7" opacity=".85"/>
-        <path d="M84 95 q4 -4 8 0 M112 95 q4 -4 8 0" stroke="#3a2a1a" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-        <path d="M88 104 Q100 108 112 104" stroke="#6b4f2e" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-      </g>
-      <g class="heartFloat" opacity=".9">
-        <path d="M152 40 a5 5 0 0 1 5 5 c0 4 -5 7 -5 7 c0 0 -5 -3 -5 -7 a5 5 0 0 1 5 -5 Z" fill="#ff5f8f"/>
-        <path d="M58 52 a4 4 0 0 1 4 4 c0 3.2 -4 5.6 -4 5.6 c0 0 -4 -2.4 -4 -5.6 a4 4 0 0 1 4 -4 Z" fill="#ff8fb0"/>
-        <path d="M170 74 a3.5 3.5 0 0 1 3.5 3.5 c0 2.8 -3.5 4.9 -3.5 4.9 c0 0 -3.5 -2.1 -3.5 -4.9 a3.5 3.5 0 0 1 3.5 -3.5 Z" fill="#ffb3c7"/>
-      </g>
-    </svg>
-  </div>
   <div class="card" id="forgiveCard">
     <div class="stamp" id="stamp">已原谅<br>❤</div>
     <h2>原谅券</h2>
@@ -274,39 +249,38 @@
   <div class="card hidden" id="promiseCard">
     <h2>狗子的道歉信 &amp; 承诺书</h2>
     <ul class="promise">
-      <li data-e="💄">对不起：你的口红被我粗心带走，害你翻遍包包</li>
-      <li data-e="🔑">对不起：你的钥匙被我揣走，你差点进不了门</li>
-      <li data-e="💳">对不起：你的卡被我顺手带走，结账时干着急</li>
-      <li data-e="🚬">对不起：你的烟被我“没收”，害你到处找</li>
+      <li data-e="💄">对不起：你的口红被我粗心带走，害你满屋子找</li>
+      <li data-e="🎀">对不起：发圈、发夹总被我随手揣走</li>
+      <li data-e="🧋">对不起：你的奶茶总被我“顺手”喝掉一半</li>
+      <li data-e="🔌">对不起：充电器被我带走，你手机没电干着急</li>
+      <li data-e="🧦">对不起：你的袜子总被我穿错</li>
       <li data-e="❤️">承诺：你的东西我绝不带走，碰之前一定先问你</li>
     </ul>
-    <p style="text-align:center;font-weight:800;color:#ff3d7f;margin-top:10px;">老婆，对不起。<br>以后我再也不会把你的东西带走了。<br>我爱你 ❤️</p>
-    <div class="sign">—— 你的狗（爱你的老公）敬上</div>
-    <button class="btn soft" id="btnAgain">💕 还想再出气？</button>
+    <p style="text-align:center;font-weight:800;color:#ff3d7f;margin-top:10px;">老婆大人，谢谢你出气原谅我。<br>以后我再也不会把你的东西带走了。<br>我爱你 ❤️</p>
+    <div class="sign">—— 你的狗（挨打认错的老公）敬上</div>
+    <button class="btn soft" id="btnAgain">💕 还想再出出气？</button>
   </div>
 </div>
 
-<footer>本券永久有效 · 认错中的狗自制</footer>
+<footer>本券永久有效 · 挨打认错中的狗自制</footer>
 
 <script>
 "use strict";
 const $ = id => document.getElementById(id);
-const STOLEN = ["钥匙 🔑","口红 💄","卡 💳","烟 🚬"];
-const CRIES = ["老婆出气了没？","我认错了真的!!","随便打，你开心就好!!","打到气消为止!!","我撑得住!!","呜汪汪汪!!","我发誓再也不带了!!","继续打，别停!","你气还没消吗…那我继续挨着!","汪！我错了汪！","看打！啊不…求轻点！","气消了记得原谅我哦~"];
 
-const STATE = { normal:0, dizzy:1, bruised:2 };
-function showState(s){
-  const eyesN = document.querySelector(".eyes-normal"), eyesD = document.querySelector(".eyes-dizzy"), eyesC = document.querySelector(".eyes-cry");
-  eyesN.style.display = s===0 ? "" : "none";
-  eyesD.style.display = s===1 ? "" : "none";
-  eyesC.style.display = s===2 ? "" : "none";
-  $("starsSpin").style.display = s>=1 ? "" : "none";
-  $("bumpG").style.display = s>=2 ? "" : "none";
-  document.querySelector(".mouth").style.display = s===2 ? "none" : "";
-  document.querySelector(".mouth-sad").style.display = s===2 ? "" : "none";
+const STOLEN = ["口红 💄","发圈 🎀","奶茶 🧋","充电器 🔌","袜子 🧦","零食 🍟","纸巾 🧻","眼镜 👓","耳机 🎧","钥匙 🔑","手机 📱","外套 🧥","雨伞 ☂️","化妆包 👜"];
+const CRIES = ["老婆出气了没？","我认错了真的!!","随便打，你开心就好!!","打到气消为止!!","我撑得住!!","呜汪汪汪!!","我发誓再也不带走了!!","别停，继续打我没事!","你气没消我继续挨着!","汪！我错了汪！","求轻点…但别停！","气消了记得原谅我哦~"];
+
+/* SVG 状态切换：直接切换源 <g> 的 class（use 克隆内容继承源 class） */
+const STATES = ["stNorm","stDizzy","stBruised","stSorry"];
+function setState(idx){
+  STATES.forEach((s,i)=>{
+    const g = document.getElementById(s);
+    if(g) g.classList.toggle("on", i===idx);
+  });
 }
 
-/* ---------- audio (pure WebAudio) ---------- */
+/* ---------- audio (pure WebAudio, no files) ---------- */
 let AC = null;
 function ac(){ if(!AC){ try{ AC = new (window.AudioContext||window.webkitAudioContext)(); }catch(e){} } return AC; }
 function slap(){
@@ -372,19 +346,54 @@ function burst(cx,cy){
     setTimeout(()=>p.remove(), 760);
   }
 }
-function boopOnDog(){
+function fxOnDog(kind){
   const box = $("dogBox");
   const ems = ["💢","🤕","💫","🌟","😵","✴️"];
   const b = document.createElement("div");
-  b.className = "boop";
+  b.className = "fx";
   b.textContent = ems[Math.floor(Math.random()*ems.length)];
-  b.style.left = (20+Math.random()*60)+"%";
-  b.style.top = (3+Math.random()*30)+"%";
-  b.style.setProperty("--dx", (Math.random()*40-20)+"px");
-  b.style.setProperty("--dy", (40+Math.random()*50)+"px");
+  b.style.left = (30+Math.random()*44)+"%";
+  b.style.top = (3+Math.random()*28)+"%";
+  const dx = (Math.random()*40-20)+"px", dy = (40+Math.random()*50)+"px";
+  b.style.setProperty("--dx", dx); b.style.setProperty("--dy", dy);
   b.style.setProperty("--dr", (Math.random()*160-80)+"deg");
   box.appendChild(b);
-  setTimeout(()=>b.remove(), 850);
+  setTimeout(()=>b.remove(), 750);
+  if(kind === "star"){
+    for(let i=0;i<2;i++){
+      const s = document.createElement("div");
+      s.className = "star-float";
+      s.textContent = "⭐";
+      s.style.left = (38+i*24)+"%";
+      s.style.top = "-6%";
+      s.style.animationDelay = (i*0.4)+"s";
+      box.appendChild(s);
+      setTimeout(()=>s.remove(), 2400);
+    }
+  }
+  if(kind === "tear"){
+    for(let i=0;i<3;i++){
+      const t = document.createElement("div");
+      t.className = "tear";
+      t.style.left = (44+i*6)+"%";
+      t.style.top = (30+i*3)+"%";
+      t.style.animationDelay = (i*0.33)+"s";
+      box.appendChild(t);
+      setTimeout(()=>t.remove(), 1600);
+    }
+  }
+  if(kind === "heart"){
+    for(let i=0;i<4;i++){
+      const h = document.createElement("div");
+      h.className = "heart-up";
+      h.textContent = "❤️";
+      h.style.left = (28+Math.random()*44)+"%";
+      h.style.top = (30+Math.random()*20)+"%";
+      h.style.animationDelay = (i*0.22)+"s";
+      box.appendChild(h);
+      setTimeout(()=>h.remove(), 1600);
+    }
+  }
 }
 function cry(){
   const box = $("dogBox");
@@ -427,7 +436,6 @@ function heartsBurst(){
 
 /* ---------- game ---------- */
 let hits = 0, started = false;
-const FULL = 50;
 
 function showScreen(id){
   ["sStart","sGame","sFinal"].forEach(s=>$(s).classList.add("hidden"));
@@ -435,47 +443,40 @@ function showScreen(id){
 }
 function tickerRotate(){
   let i = 0;
-  setInterval(()=>{ i = (i+1)%STOLEN.length; $("tickerText").textContent = STOLEN[i]; }, 1200);
+  setInterval(()=>{ i = (i+1)%STOLEN.length; $("tickerText").textContent = STOLEN[i]; }, 900);
 }
 
 function onHit(){
   if(!started) return;
   hits++;
   $("hitCount").textContent = hits;
-  const pct = Math.min(100, Math.round(hits/FULL*100));
-  $("pct").textContent = pct;
-  $("barFill").style.width = pct+"%";
+  const remain = Math.max(0, 100 - hits*2);
+  $("pct").textContent = remain;
+  $("barFill").style.width = remain+"%";
   slap();
-  burst(innerWidth/2, innerHeight*0.42 + (Math.random()*70-35));
-  boopOnDog();
+  burst(innerWidth/2, innerHeight*0.40 + (Math.random()*70-35));
+  fxOnDog();
   const box = $("dogBox");
   box.classList.remove("shake"); void box.offsetWidth; box.classList.add("shake");
   if(Math.random() < 0.9) cry();
 
-  let s = STATE.normal;
-  if(hits >= 20) s = STATE.dizzy;
-  if(hits >= 40) s = STATE.bruised;
-  showState(s);
-
-  if(hits === 10){ $("gameSub").textContent = "打中啦！他开始眼冒金星… 出气进度 20%"; ding(); }
-  if(hits === 20){ $("gameSub").textContent = "星星在他头顶转圈圈… 出气进度 40%"; ding(); }
-  if(hits === 40){ $("gameSub").textContent = "呜呜呜…打哭了！肿包都出来了，气该消了吧~"; ding(); }
-  if(hits >= FULL){
-    $("pct").textContent = 100;
-    $("barFill").style.width = "100%";
-    $("barLabel").textContent = "气出够了！快原谅他吧！！";
-    $("btnForgiveQuick").textContent = "气消了！盖原谅章 ❤️";
-    ding(); fanfare();
-  } else {
-    let label;
-    if(hits < 10)      label = "她还很生气… 继续打！("+pct+"%)";
-    else if(hits < 20) label = "有点解气了… 继续！("+pct+"%)";
-    else if(hits < 30) label = "差不多了… 再打几下！("+pct+"%)";
-    else if(hits < 40) label = "快消气了！再打几下发发威 ("+pct+"%)";
-    else               label = "再打几下就够啦 ("+pct+"%)";
-    if(hits === 30) label = "他大喊：老婆出气了没？我认错了真的!! 😭";
-    $("barLabel").textContent = label;
+  /* 被打效果变化：眼冒金星 → 青肿大哭 → 捧花认错 */
+  if(hits === 8){ setState(1); $("gameSub").textContent = "打中啦！他开始眼冒金星…"; ding(); fxOnDog("star"); }
+  if(hits === 20){ setState(2); $("gameSub").textContent = "呜呜呜…打哭了！他哭着求饶又不敢躲"; ding(); fxOnDog("tear"); }
+  if(hits === 36){
+    setState(3); $("gameSub").textContent = "他捧着花认错了：老婆！气消了没？"; ding(); fxOnDog("heart");
   }
+
+  let label;
+  if(remain > 80)      label = "她还很生气… 继续打！";
+  else if(remain > 60) label = "她没那么气了… 再打几下！";
+  else if(remain > 40) label = "差不多了… 快消气啦！";
+  else if(remain > 20) label = "气快消了！再打几下出出气～";
+  else                 label = "她气消了！随时原谅他！！";
+  if(hits === 15) label = "他大喊：老婆出气了没？我认错了真的!! 😭";
+  if(hits === 28) label = "呜呜呜…还气吗？打到我认错为止!!";
+  if(hits >= 50)  label = "打这么多下，气肯定消了！原谅他吧！";
+  $("barLabel").textContent = label;
 }
 
 function finish(){
@@ -498,12 +499,12 @@ function forgive(){
 function restart(){
   hits = 0; started = true;
   $("hitCount").textContent = 0;
-  $("pct").textContent = 0;
-  $("barFill").style.width = "0%";
-  $("barLabel").textContent = "她还很生气… 打我吧！";
-  $("gameSub").textContent = "连点屏幕出气！气出够了随时原谅他 👇";
+  $("pct").textContent = 100;
+  $("barFill").style.width = "100%";
+  $("barLabel").textContent = "她还很生气… 继续打！";
+  setState(0);
+  $("gameSub").textContent = "连点屏幕出气！气消了随时原谅他 👇";
   $("btnForgiveQuick").textContent = "我气消了，原谅他 ❤️";
-  showState(STATE.normal);
   showScreen("sGame");
 }
 
@@ -512,6 +513,7 @@ $("btnStart").addEventListener("click", ()=>{
   if(ac() && ac().state === "suspended") ac().resume();
   showScreen("sGame");
   started = true;
+  setState(0);
   ding();
 });
 $("sGame").addEventListener("pointerdown", onHit);
